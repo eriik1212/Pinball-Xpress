@@ -67,6 +67,8 @@ bool ModuleSceneIntro::Start()
 
 	pinballShape.add(App->physics->CreateChainStatic(0, 750, pinball_shape, 62));
 
+	//App->physics->CreatePrismaticJoint(250, 400, 50, 4, 450, 250, 20, 8);
+
 	return ret;
 }
 

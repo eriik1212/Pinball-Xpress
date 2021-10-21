@@ -51,6 +51,10 @@ public:
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 
+	// CreateJoints
+	// Prismatic Joint
+	//void CreatePrismaticJoint(int xA, int yA, int widthA, int heightA, int xB, int yB, int widthB, int heightB);
+
 private:
 
 	bool debug;
