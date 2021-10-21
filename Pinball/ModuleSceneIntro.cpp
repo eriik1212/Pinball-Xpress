@@ -27,7 +27,7 @@ bool ModuleSceneIntro::Start()
 
 	circle = App->textures->Load("pinball/wheel.png"); 
 	box = App->textures->Load("pinball/crate.png");
-	pinballTexture = App->textures->Load("pinball/rick_head.png");
+	pinballTexture = App->textures->Load("pinball/pinball_background.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	//sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
@@ -67,7 +67,7 @@ bool ModuleSceneIntro::Start()
 		123, -51
 	};
 
-	pinballShape.add(App->physics->CreateChainStatic(0, 780, pinball_shape, 62));
+	pinballShape.add(App->physics->CreateChainStatic(0, 750, pinball_shape, 62));
 
 	return ret;
 }
@@ -111,7 +111,17 @@ update_status ModuleSceneIntro::Update()
 	fVector normal(0.0f, 0.0f);
 
 	// All draw functions ------------------------------------------------------
-	p2List_item<PhysBody*>* c = circles.getFirst();
+	p2List_item<PhysBody*>* c = pinballShape.getFirst();
+
+	while (c != NULL)
+	{
+		int x, y;
+		c->data->GetPosition(x, y);
+		App->renderer->Blit(pinballTexture, 0, 0, NULL, 1.0f, c->data->GetRotation());
+		c = c->next;
+	}
+
+	c = circles.getFirst();
 
 	while(c != NULL)
 	{
@@ -135,16 +145,6 @@ update_status ModuleSceneIntro::Update()
 			if(hit >= 0)
 				ray_hit = hit;
 		}
-		c = c->next;
-	}
-
-	c = pinballShape.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(pinballTexture, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
 	}
 
