@@ -43,7 +43,9 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
-	PhysBody* CreateRectangle(int x, int y, int width, int height);
+	PhysBody* CreateRectangleDynamic(int x, int y, int width, int height);
+	PhysBody* CreateRectangleStatic(int x, int y, int width, int height);
+	PhysBody* CreateRectangleKinematic(int x, int y, int width, int height);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChainStatic(int x, int y, int* points, int size);
 	PhysBody* CreateChainDynamic(int x, int y, int* points, int size);
@@ -53,7 +55,7 @@ public:
 
 	// CreateJoints
 	// Prismatic Joint
-	//void CreatePrismaticJoint(int xA, int yA, int widthA, int heightA, int xB, int yB, int widthB, int heightB);
+	//void CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB);
 
 private:
 

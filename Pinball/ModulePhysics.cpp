@@ -81,10 +81,60 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleDynamic(int x, int y, int width, int height)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = width * 0.5f;
+	pbody->height = height * 0.5f;
+
+	return pbody;
+}
+
+PhysBody* ModulePhysics::CreateRectangleStatic(int x, int y, int width, int height)
+{
+	b2BodyDef body;
+	body.type = b2_staticBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = width * 0.5f;
+	pbody->height = height * 0.5f;
+
+	return pbody;
+}
+
+PhysBody* ModulePhysics::CreateRectangleKinematic(int x, int y, int width, int height)
+{
+	b2BodyDef body;
+	body.type = b2_kinematicBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -372,41 +422,25 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 		physB->listener->OnCollision(physB, physA);
 }
 
-/*void ModulePhysics::CreatePrismaticJoint(int xA, int yA, int widthA, int heightA, int xB, int yB, int widthB, int heightB)
+/*void ModulePhysics::CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB)
 {
-	//-----------------------------------------------------------------------------BodyA
-	b2BodyDef bodyA;
-	bodyA.type = b2_staticBody;
-	bodyA.position.Set(PIXEL_TO_METERS(xA), PIXEL_TO_METERS(yA));
-
-	b2Body* bA = world->CreateBody(&bodyA);
-	b2PolygonShape boxA;
-	boxA.SetAsBox(PIXEL_TO_METERS(widthA) * 0.5f, PIXEL_TO_METERS(heightA) * 0.5f);
-
-	b2FixtureDef fixtureA;
-	fixtureA.shape = &boxA;
-	fixtureA.density = 1.0f;
-
-	bA->CreateFixture(&fixtureA);
-
-	//-----------------------------------------------------------------------------BodyB
-	b2BodyDef bodyB;
-	bodyB.type = b2_dynamicBody;
-	bodyB.position.Set(PIXEL_TO_METERS(xB), PIXEL_TO_METERS(yB));
-
-	b2Body* bB = world->CreateBody(&bodyA);
-	b2PolygonShape boxB;
-	boxB.SetAsBox(PIXEL_TO_METERS(widthB) * 0.5f, PIXEL_TO_METERS(heightB) * 0.5f);
-
-	b2FixtureDef fixtureB;
-	fixtureB.shape = &boxB;
-	fixtureB.density = 1.0f;
-
-	bB->CreateFixture(&fixtureB);
-
+	
 	//-----------------------------------------------------------------------------PrismaticJoint
 	b2PrismaticJointDef* prismDef = new b2PrismaticJointDef();
-	prismDef->bodyA = bA;
-	prismDef->bodyB = bB;
+	prismDef->Initialize(bodyA, bodyB, bodyA->GetPosition(), b2Vec2(0, 1));
+	prismDef->lowerTranslation = -600;
+	prismDef->upperTranslation = 600;
+	prismDef->enableLimit = true;
+	prismDef->maxMotorForce = 100;
+	//prismDef->motorSpeed = 4.0;
+	prismDef->enableMotor = true;
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		prismDef->motorSpeed = 99;
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		prismDef->motorSpeed = -99;
+
 	world->CreateJoint(prismDef);
+
 }*/
