@@ -553,3 +553,10 @@ void ModulePhysics::CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB)
 	pJoint = (b2PrismaticJoint*) world->CreateJoint(&prismDef);
 
 }
+
+void ModulePhysics::CreateRevoluteJoint(b2Body* bodyA, b2Body* bodyB)
+{
+
+
+
+}

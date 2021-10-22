@@ -221,6 +221,10 @@ bool ModuleSceneIntro::Start()
 
 	herradura_Shape.add(App->physics->CreateChainStatic(0, 750, down_triangles, 14));
 
+	
+
+
+
 	return ret;
 }
 
@@ -242,7 +246,7 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();
 	}*/
 
-	
+
 
 	//---------------------------------------------------------------------------------------ShootPlatformMovement
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)

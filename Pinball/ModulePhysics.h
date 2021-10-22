@@ -64,6 +64,7 @@ public:
 	b2PrismaticJointDef prismDef;
 	b2PrismaticJoint* pJoint;
 	void CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB);
+	void CreateRevoluteJoint(b2Body* bodyA, b2Body* bodyB);
 
 private:
 
