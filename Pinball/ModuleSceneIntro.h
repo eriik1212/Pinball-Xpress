@@ -21,6 +21,10 @@ public:
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> pinballShape;
+	p2List<PhysBody*> triangle_Shape;
+	p2List<PhysBody*> line_Shape;
+	p2List<PhysBody*> herradura_Shape;
+	p2List<PhysBody*> moving_rectangle_shape_;
 
 	PhysBody* sensor;
 	bool sensed;

@@ -43,8 +43,9 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius);
-	PhysBody* CreateRectangleDynamic(int x, int y, int width, int height);
-	PhysBody* CreateRectangleStatic(int x, int y, int width, int height);
+	/*PhysBody* CreateRectangleDynamic(int x, int y, int width, int height);
+	PhysBody* CreateRectangleStatic(int x, int y, int width, int height);*/
+	PhysBody* CreateRectangle(int x, int y, int width, int height);
 	PhysBody* CreateRectangleKinematic(int x, int y, int width, int height);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChainStatic(int x, int y, int* points, int size);
