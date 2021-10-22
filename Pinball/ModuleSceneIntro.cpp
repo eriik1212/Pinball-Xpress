@@ -68,14 +68,14 @@ bool ModuleSceneIntro::Start()
 	pinballShape.add(App->physics->CreateChainStatic(0, 750, pinball_shape, 62));
 
 	int triangleShape[6] = {
-		11, 400,
-		70, 427,
+		5, 400,
+		40, 427,
 		1, 340,
 	};
 	// Pivot 0, 0
 	int triangleShape1[6] = {
 		11, 400,
-		-59, 427,
+		-40, 427,
 		21, 340,
 	};
 	int triangleShape2[6] = {
@@ -94,11 +94,26 @@ bool ModuleSceneIntro::Start()
 		492, 556
 	};
 
+	int triangleShape5[6] = {
+		10, 175,
+		50, 165,
+		1, 150,
+	};
+
+	int triangleShape6[6] = {
+		30, 175,
+		39, 150,
+		-10, 165,
+	};
+
+
 	triangle_Shape.add(App->physics->CreateChainStatic(70, 180, triangleShape, 6));
 	triangle_Shape.add(App->physics->CreateChainStatic(275, 180, triangleShape1, 6));
 	triangle_Shape.add(App->physics->CreateChainStatic(-200, -245, triangleShape2, 6));
 	triangle_Shape.add(App->physics->CreateChainStatic(-160, -260, triangleShape3, 6));
 	triangle_Shape.add(App->physics->CreateChainStatic(-175, -210, triangleShape4, 6));
+	triangle_Shape.add(App->physics->CreateChainStatic(110, 500, triangleShape5, 6));
+	triangle_Shape.add(App->physics->CreateChainStatic(200, 500, triangleShape6, 6));
 
 	int line1[12] = {
 		420, 705,
