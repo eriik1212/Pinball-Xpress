@@ -100,6 +100,9 @@ update_status ModulePhysics::PreUpdate()
 {
 	world->Step(1.0f / 60.0f, 6, 2);
 
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && debug == true)
+		App->physics->CreateCircleBullet(360, 630, 8);
+
 	for(b2Contact* c = world->GetContactList(); c; c = c->GetNext())
 	{
 		if(c->GetFixtureA()->IsSensor() && c->IsTouching())
@@ -137,18 +140,20 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 
 	return pbody;
 }
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
+
+PhysBody* ModulePhysics::CreateCircleBullet(int x, int y, int radius)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
+	body.bullet = true;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
-	b2PolygonShape box;
-	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
 
+	b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);
 	b2FixtureDef fixture;
-	fixture.shape = &box;
+	fixture.shape = &shape;
 	fixture.density = 1.0f;
 
 	b->CreateFixture(&fixture);
@@ -156,13 +161,12 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
 	b->SetUserData(pbody);
-	pbody->width = width * 0.5f;
-	pbody->height = height * 0.5f;
+	pbody->width = pbody->height = radius;
 
 	return pbody;
 }
 
-/*PhysBody* ModulePhysics::CreateRectangleDynamic(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleDynamic(int x, int y, int width, int height)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
@@ -211,7 +215,7 @@ PhysBody* ModulePhysics::CreateRectangleStatic(int x, int y, int width, int heig
 	pbody->height = height * 0.5f;
 
 	return pbody;
-}*/
+}
 
 PhysBody* ModulePhysics::CreateRectangleKinematic(int x, int y, int width, int height)
 {

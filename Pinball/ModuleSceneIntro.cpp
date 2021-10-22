@@ -68,6 +68,8 @@ bool ModuleSceneIntro::Start()
 
 	pinballShape.add(App->physics->CreateChainStatic(0, 750, pinball_shape, 62));
 
+	App->physics->CreatePrismaticJoint(App->physics->CreateRectangleDynamic(361, 700, 20, 10)->body, App->physics->CreateRectangleStatic(361, 710, 20, 10)->body);
+
 	int triangleShape[6] = {
 		5, 400,
 		40, 427,
@@ -247,8 +249,7 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();
 	}*/
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		App->physics->CreateCircle(360, 630, 5);
+	
 
 	//---------------------------------------------------------------------------------------ShootPlatformMovement
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
