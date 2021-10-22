@@ -7,6 +7,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 
+
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	circle = box = NULL;
@@ -67,7 +68,7 @@ bool ModuleSceneIntro::Start()
 
 	pinballShape.add(App->physics->CreateChainStatic(0, 750, pinball_shape, 62));
 
-	//App->physics->CreatePrismaticJoint(App->physics->CreateRectangleKinematic(250, 250, 100, 40)->body, App->physics->CreateRectangleStatic(250, 300, 100, 100)->body);
+	App->physics->CreatePrismaticJoint(App->physics->CreateRectangleDynamic(361, 700, 20, 10)->body, App->physics->CreateRectangleStatic(361, 710, 20, 10)->body);
 
 	return ret;
 }
@@ -83,12 +84,21 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	/*if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;
 		ray.x = App->input->GetMouseX();
 		ray.y = App->input->GetMouseY();
-	}
+	}*/
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		App->physics->CreateCircle(360, 630, 5);
+
+	//---------------------------------------------------------------------------------------ShootPlatformMovement
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		App->physics->pJoint->SetMotorSpeed(-0.05*App->physics->prismDef.motorSpeed);
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE)
+		App->physics->pJoint->SetMotorSpeed(App->physics->prismDef.motorSpeed);
 
 	// Prepare for raycast ------------------------------------------------------
 	

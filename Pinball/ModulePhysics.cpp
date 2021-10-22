@@ -422,25 +422,20 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 		physB->listener->OnCollision(physB, physA);
 }
 
-/*void ModulePhysics::CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB)
+void ModulePhysics::CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB)
 {
 	
 	//-----------------------------------------------------------------------------PrismaticJoint
-	b2PrismaticJointDef* prismDef = new b2PrismaticJointDef();
-	prismDef->Initialize(bodyA, bodyB, bodyA->GetPosition(), b2Vec2(0, 1));
-	prismDef->lowerTranslation = -600;
-	prismDef->upperTranslation = 600;
-	prismDef->enableLimit = true;
-	prismDef->maxMotorForce = 100;
-	//prismDef->motorSpeed = 4.0;
-	prismDef->enableMotor = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		prismDef->motorSpeed = 99;
+	prismDef.Initialize(bodyA, bodyB, bodyA->GetPosition(), b2Vec2(0, 1));
+	prismDef.lowerTranslation = 0;
+	prismDef.upperTranslation = 1;
+	prismDef.enableLimit = true;
+	prismDef.maxMotorForce = 20;
+	prismDef.motorSpeed = 20.0;
+	prismDef.enableMotor = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		prismDef->motorSpeed = -99;
 
-	world->CreateJoint(prismDef);
+	pJoint = (b2PrismaticJoint*) world->CreateJoint(&prismDef);
 
-}*/
+}

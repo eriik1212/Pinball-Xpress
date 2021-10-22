@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Box2D/Box2D/Box2D.h"
+#include "Box2D/Box2D/Dynamics/Joints/b2PrismaticJoint.h"
 
 #define GRAVITY_X 0.0f
 #define GRAVITY_Y -7.0f
@@ -31,7 +32,7 @@ public:
 };
 
 // Module --------------------------------------
-class ModulePhysics : public Module, public b2ContactListener // TODO
+class ModulePhysics : public Module, public b2ContactListener
 {
 public:
 	ModulePhysics(Application* app, bool start_enabled = true);
@@ -48,14 +49,16 @@ public:
 	PhysBody* CreateRectangleKinematic(int x, int y, int width, int height);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChainStatic(int x, int y, int* points, int size);
-	PhysBody* CreateChainDynamic(int x, int y, int* points, int size);
+	PhysBody* CreateChainDynamic(int x, int y, int* points, int size);	
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 
 	// CreateJoints
 	// Prismatic Joint
-	//void CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB);
+	b2PrismaticJointDef prismDef;
+	b2PrismaticJoint* pJoint;
+	void CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB);
 
 private:
 
