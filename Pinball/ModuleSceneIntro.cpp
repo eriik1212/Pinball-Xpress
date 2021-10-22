@@ -68,7 +68,163 @@ bool ModuleSceneIntro::Start()
 
 	pinballShape.add(App->physics->CreateChainStatic(0, 750, pinball_shape, 62));
 
-	App->physics->CreatePrismaticJoint(App->physics->CreateRectangleDynamic(361, 700, 20, 10)->body, App->physics->CreateRectangleStatic(361, 710, 20, 10)->body);
+	int triangleShape[6] = {
+		5, 400,
+		40, 427,
+		1, 340,
+	};
+	// Pivot 0, 0
+	int triangleShape1[6] = {
+		11, 400,
+		-40, 427,
+		21, 340,
+	};
+	int triangleShape2[6] = {
+		483, 579,
+		501, 568,
+		484, 556
+	};
+	int triangleShape3[6] = {
+		483, 569,
+		502, 578,
+		500, 556
+	};
+	int triangleShape4[6] = {
+		483, 576,
+		502, 576,
+		492, 556
+	};
+
+	int triangleShape5[6] = {
+		10, 175,
+		50, 165,
+		1, 150,
+	};
+
+	int triangleShape6[6] = {
+		30, 175,
+		39, 150,
+		-10, 165,
+	};
+
+
+	triangle_Shape.add(App->physics->CreateChainStatic(70, 180, triangleShape, 6));
+	triangle_Shape.add(App->physics->CreateChainStatic(275, 180, triangleShape1, 6));
+	triangle_Shape.add(App->physics->CreateChainStatic(-200, -245, triangleShape2, 6));
+	triangle_Shape.add(App->physics->CreateChainStatic(-160, -260, triangleShape3, 6));
+	triangle_Shape.add(App->physics->CreateChainStatic(-175, -210, triangleShape4, 6));
+	triangle_Shape.add(App->physics->CreateChainStatic(110, 500, triangleShape5, 6));
+	triangle_Shape.add(App->physics->CreateChainStatic(200, 500, triangleShape6, 6));
+
+	int line1[12] = {
+		420, 705,
+		420, 691,
+		363, 645,
+		346, 546,
+		345, 546,
+		345, 652
+	};
+
+	int line2[12] = {
+		270, 691,
+		270, 705,
+		363, 652,
+		363, 546,
+		362, 546,
+		345, 645
+	};
+
+	int line3[4] = {
+		348, -111,
+		348, -511
+	};
+
+	line_Shape.add(App->physics->CreateChainStatic(-305, -45, line1, 12));
+	line_Shape.add(App->physics->CreateChainStatic(-35, -45, line2, 12));
+	//line_Shape.add(App->physics->CreateChainStatic(0, 750, line3, 4)); //S'ha de declarar com a edge
+
+	// Pivot 0, -1024
+	int herradura1[72] = {
+		366, 895,
+		373, 895,
+		379, 899,
+		382, 903,
+		385, 909,
+		388, 917,
+		402, 905,
+		401, 896,
+		394, 901,
+		388, 885,
+		382, 878,
+		373, 871,
+		361, 871,
+		350, 875,
+		341, 882,
+		334, 889,
+		326, 901,
+		322, 912,
+		319, 925,
+		320, 938,
+		322, 947,
+		327, 953,
+		334, 960,
+		345, 962,
+		350, 964,
+		348, 970,
+		356, 971,
+		362, 958,
+		362, 952,
+		353, 952,
+		343, 946,
+		337, 934,
+		336, 924,
+		339, 911,
+		347, 900,
+		355, 896
+	};
+
+	herradura_Shape.add(App->physics->CreateChainStatic(-250, -660, herradura1, 72));
+
+	int vaquero[34] = {
+		356, -607,
+		337, -633,
+		312, -656,
+		273, -640,
+		250, -620,
+		233, -592,
+		230, -580,
+		240, -592,
+		256, -610,
+		267, -615,
+		274, -615,
+		290, -615,
+		320, -610,
+		340, -600,
+		362, -570,
+		373, -544,
+		368, -579
+	};
+
+	herradura_Shape.add(App->physics->CreateChainStatic(0, 750, vaquero, 34));
+
+	int down_triangles[14] = {
+		348,-300,
+		348, -380,
+		340, -360,
+		330, -350,
+		315, -340,
+		285, -330,
+		315, -320
+	};
+
+	herradura_Shape.add(App->physics->CreateChainStatic(0, 750, down_triangles, 14));
+
+	//Moving rectangle
+
+	moving_rectangle_shape_.add(App->physics->CreateRectangleKinematic(100, 500, 50, 10));
+
+	//App->physics->CreatePrismaticJoint(250, 400, 50, 4, 450, 250, 20, 8);
+	//App->physics->CreatePrismaticJoint(App->physics->CreateRectangleKinematic(250, 250, 100, 40)->body, App->physics->CreateRectangleStatic(250, 300, 100, 100)->body);
 
 	return ret;
 }
@@ -101,7 +257,7 @@ update_status ModuleSceneIntro::Update()
 		App->physics->pJoint->SetMotorSpeed(App->physics->prismDef.motorSpeed);
 
 	// Prepare for raycast ------------------------------------------------------
-	
+
 	iPoint mouse;
 	mouse.x = App->input->GetMouseX();
 	mouse.y = App->input->GetMouseY();

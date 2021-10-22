@@ -35,6 +35,63 @@ bool ModulePhysics::Start()
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
+	//Els cercles es mouen amb la camara CANVIAR
+	//CERCLE 1 (GRAN)
+	b2BodyDef body;
+	body.type = b2_staticBody;
+	body.position.Set(3.7f, 7.9f);
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2CircleShape shape;
+	shape.m_radius = 0.7f;
+
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	b->CreateFixture(&fixture);
+
+	//CERCLE 2 (petit)
+	b2BodyDef body1;
+	body1.type = b2_staticBody;
+	body1.position.Set(6.6f, 5.0f);
+
+	b2Body* b1 = world->CreateBody(&body1);
+
+	b2CircleShape shape1;
+	shape1.m_radius = 0.1f;
+
+	b2FixtureDef fixture1;
+	fixture1.shape = &shape1;
+	b1->CreateFixture(&fixture1);
+
+	//CERCLE 3 (petit)
+	b2BodyDef body2;
+	body2.type = b2_staticBody;
+	body2.position.Set(5.8f, 5.15f);
+
+	b2Body* b2 = world->CreateBody(&body2);
+
+	b2CircleShape shape2;
+	shape2.m_radius = 0.1f;
+
+	b2FixtureDef fixture2;
+	fixture2.shape = &shape2;
+	b2->CreateFixture(&fixture2);
+
+	//CERCLE 4 (petit)
+	b2BodyDef body3;
+	body3.type = b2_staticBody;
+	body3.position.Set(5.0f, 5.5f);
+
+	b2Body* b3 = world->CreateBody(&body3);
+
+	b2CircleShape shape3;
+	shape3.m_radius = 0.1f;
+
+	b2FixtureDef fixture3;
+	fixture3.shape = &shape3;
+	b3->CreateFixture(&fixture3);
+
 	return true;
 }
 
@@ -80,14 +137,39 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 
 	return pbody;
 }
-
-PhysBody* ModulePhysics::CreateRectangleDynamic(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
+
+	b2FixtureDef fixture;
+	fixture.shape = &box;
+	fixture.density = 1.0f;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = width * 0.5f;
+	pbody->height = height * 0.5f;
+
+	return pbody;
+}
+
+/*PhysBody* ModulePhysics::CreateRectangleDynamic(int x, int y, int width, int height)
+{
+	b2BodyDef body;
+	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
 
@@ -129,7 +211,7 @@ PhysBody* ModulePhysics::CreateRectangleStatic(int x, int y, int width, int heig
 	pbody->height = height * 0.5f;
 
 	return pbody;
-}
+}*/
 
 PhysBody* ModulePhysics::CreateRectangleKinematic(int x, int y, int width, int height)
 {

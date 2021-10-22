@@ -1,2 +1,4 @@
 C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\Debug\2D Physics - class 4.exe
 C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\Debug\2D Physics - class 4.pdb
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\Debug\2D Physics - class 4.exe
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\Debug\2D Physics - class 4.pdb
