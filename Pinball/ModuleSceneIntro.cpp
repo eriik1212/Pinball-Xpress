@@ -29,10 +29,10 @@ bool ModuleSceneIntro::Start()
 	pinballTexture = App->textures->Load("pinball/pinball_background.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
-	//sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
+	sensor = App->physics->CreateRectangleSensor(185.5f, 750, 125, 10);
 
 	// Pivot 2, -751
-	int pinball_shape[62] = {
+	int pinball_shape[66] = {
 		248, -52,
 		348, -111,
 		348, -30,
@@ -63,12 +63,27 @@ bool ModuleSceneIntro::Start()
 		2, -42,
 		34, -42,
 		34, -102,
-		123, -51
+		123, -51,
+		123, 0,
+		248, 0
 	};
 
-	pinballShape.add(App->physics->CreateChainStatic(0, 750, pinball_shape, 62));
+	pinballShape.add(App->physics->CreateChainStatic(0, 750, pinball_shape, 66, 0));
 
-	App->physics->CreatePrismaticJoint(App->physics->CreateRectangleDynamic(361, 700, 20, 10)->body, App->physics->CreateRectangleStatic(361, 710, 20, 10)->body);
+	//KICKER JOINT
+	App->physics->CreatePrismaticJoint(App->physics->CreateRectangleDynamic(361, 700, 20, 10, 0)->body, App->physics->CreateRectangleStatic(361, 710, 20, 10, 0)->body);
+
+	//Squares At Left-Side
+	App->physics->CreateRectangleStatic(30, 340, 10, 10, 1);
+	App->physics->CreateRectangleStatic(30, 360, 10, 10, 1);
+	App->physics->CreateRectangleStatic(30, 380, 10, 10, 1);
+	App->physics->CreateRectangleStatic(30, 400, 10, 10, 1);
+
+	//Rectangles At Left-Down-Side
+	App->physics->CreateRectangleStatic(20, 680, 20, 30, 2);
+
+	//Separation Betwenn Ball Spawn and Map
+	App->physics->CreateRectangleStatic(348, 440, 2, 440, 0);
 
 	int triangleShape[6] = {
 		5, 400,
@@ -110,13 +125,13 @@ bool ModuleSceneIntro::Start()
 	};
 
 
-	triangle_Shape.add(App->physics->CreateChainStatic(70, 180, triangleShape, 6));
-	triangle_Shape.add(App->physics->CreateChainStatic(275, 180, triangleShape1, 6));
-	triangle_Shape.add(App->physics->CreateChainStatic(-200, -245, triangleShape2, 6));
-	triangle_Shape.add(App->physics->CreateChainStatic(-160, -260, triangleShape3, 6));
-	triangle_Shape.add(App->physics->CreateChainStatic(-175, -210, triangleShape4, 6));
-	triangle_Shape.add(App->physics->CreateChainStatic(110, 500, triangleShape5, 6));
-	triangle_Shape.add(App->physics->CreateChainStatic(200, 500, triangleShape6, 6));
+	triangle_Shape.add(App->physics->CreateChainStatic(70, 180, triangleShape, 6, 1));
+	triangle_Shape.add(App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1));
+	triangle_Shape.add(App->physics->CreateChainStatic(-200, -245, triangleShape2, 6, 1));
+	triangle_Shape.add(App->physics->CreateChainStatic(-160, -260, triangleShape3, 6, 1));
+	triangle_Shape.add(App->physics->CreateChainStatic(-175, -210, triangleShape4, 6, 1));
+	triangle_Shape.add(App->physics->CreateChainStatic(110, 500, triangleShape5, 6, 0.5f));
+	triangle_Shape.add(App->physics->CreateChainStatic(200, 500, triangleShape6, 6, 0.5f));
 
 	int line1[12] = {
 		420, 705,
@@ -141,8 +156,8 @@ bool ModuleSceneIntro::Start()
 		348, -511
 	};
 
-	line_Shape.add(App->physics->CreateChainStatic(-305, -45, line1, 12));
-	line_Shape.add(App->physics->CreateChainStatic(-35, -45, line2, 12));
+	line_Shape.add(App->physics->CreateChainStatic(-305, -45, line1, 12, 0));
+	line_Shape.add(App->physics->CreateChainStatic(-35, -45, line2, 12, 0));
 	//line_Shape.add(App->physics->CreateChainStatic(0, 750, line3, 4)); //S'ha de declarar com a edge
 
 	// Pivot 0, -1024
@@ -185,7 +200,7 @@ bool ModuleSceneIntro::Start()
 		355, 896
 	};
 
-	herradura_Shape.add(App->physics->CreateChainStatic(-250, -660, herradura1, 72));
+	herradura_Shape.add(App->physics->CreateChainStatic(-250, -660, herradura1, 72, 1));
 
 	int vaquero[34] = {
 		356, -607,
@@ -207,7 +222,7 @@ bool ModuleSceneIntro::Start()
 		368, -579
 	};
 
-	herradura_Shape.add(App->physics->CreateChainStatic(0, 750, vaquero, 34));
+	herradura_Shape.add(App->physics->CreateChainStatic(0, 750, vaquero, 34, 0));
 
 	int down_triangles[14] = {
 		348,-300,
@@ -219,11 +234,7 @@ bool ModuleSceneIntro::Start()
 		315, -320
 	};
 
-	herradura_Shape.add(App->physics->CreateChainStatic(0, 750, down_triangles, 14));
-
-	
-
-
+	herradura_Shape.add(App->physics->CreateChainStatic(0, 750, down_triangles, 14, 0));
 
 	return ret;
 }
@@ -246,9 +257,7 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();
 	}*/
 
-
-
-	//---------------------------------------------------------------------------------------ShootPlatformMovement
+	//---------------------------------------------------------------------------------------ShootPlatformMovement (KICKER)
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		App->physics->pJoint->SetMotorSpeed(-0.05*App->physics->prismDef.motorSpeed);
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE)

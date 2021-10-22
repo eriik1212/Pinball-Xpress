@@ -43,14 +43,16 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	PhysBody* CreateCircle(int x, int y, int radius);
-	PhysBody* CreateCircleBullet(int x, int y, int radius);
-	PhysBody* CreateRectangleDynamic(int x, int y, int width, int height);
-	PhysBody* CreateRectangleStatic(int x, int y, int width, int height);
+	PhysBody* CreateCircle(int x, int y, int radius, int restitution);
+	PhysBody* CreateCircleBullet(int x, int y, int radius, int restitution);
+	PhysBody* CreateRectangleDynamic(int x, int y, int width, int height, int restitution);
+	PhysBody* CreateRectangleStatic(int x, int y, int width, int height, int restitution);
 	PhysBody* CreateRectangleKinematic(int x, int y, int width, int height, b2Vec2 linearVelocity);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
-	PhysBody* CreateChainStatic(int x, int y, int* points, int size);
-	PhysBody* CreateChainDynamic(int x, int y, int* points, int size);	
+	PhysBody* CreateChainStatic(int x, int y, int* points, int size, int restitution);
+	PhysBody* CreateChainDynamic(int x, int y, int* points, int size, int restitution);
+
+	PhysBody* ballBullet;
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);

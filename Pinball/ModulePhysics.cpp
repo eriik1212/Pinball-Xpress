@@ -5,6 +5,7 @@
 #include "ModulePhysics.h"
 #include "p2Point.h"
 #include "math.h"
+#include "ModuleSceneIntro.h"
 
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
@@ -48,6 +49,7 @@ bool ModulePhysics::Start()
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
+	fixture.restitution = 1;
 	b->CreateFixture(&fixture);
 
 	//CERCLE 2 (petit)
@@ -62,6 +64,7 @@ bool ModulePhysics::Start()
 
 	b2FixtureDef fixture1;
 	fixture1.shape = &shape1;
+	fixture1.restitution = 0.5f;
 	b1->CreateFixture(&fixture1);
 
 	//CERCLE 3 (petit)
@@ -76,6 +79,7 @@ bool ModulePhysics::Start()
 
 	b2FixtureDef fixture2;
 	fixture2.shape = &shape2;
+	fixture2.restitution = 0.5f;
 	b2->CreateFixture(&fixture2);
 
 	//CERCLE 4 (petit)
@@ -90,6 +94,7 @@ bool ModulePhysics::Start()
 
 	b2FixtureDef fixture3;
 	fixture3.shape = &shape3;
+	fixture3.restitution = 0.5f;
 	b3->CreateFixture(&fixture3);
 
 	//MovingRectangle
@@ -105,6 +110,7 @@ bool ModulePhysics::Start()
 	b2FixtureDef fixtureRectKine;
 	fixtureRectKine.shape = &box;
 	fixtureRectKine.density = 1.0f;
+	fixtureRectKine.restitution = 1;
 
 	bRectKine->CreateFixture(&fixtureRectKine);
 
@@ -120,7 +126,18 @@ update_status ModulePhysics::PreUpdate()
 	world->Step(1.0f / 60.0f, 6, 2);
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && debug == true)
-		App->physics->CreateCircleBullet(360, 630, 8);
+	{
+		App->scene_intro->circles.add(CreateCircleBullet(360, 630, 8, 0));
+		App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
+	}
+
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && debug == true)
+	{
+		App->scene_intro->circles.add(CreateCircleBullet(App->input->GetMouseX(), App->input->GetMouseY(), 8, 0));
+		App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
+	}
+
 
 
 	if ((bRectKine->GetPosition().x < PIXEL_TO_METERS(70) && bRectKine->GetLinearVelocity().x < 0) || (bRectKine->GetPosition().x > PIXEL_TO_METERS(300) && bRectKine->GetLinearVelocity().x > 0)) {
@@ -143,7 +160,7 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, int restitution)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
@@ -156,6 +173,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.density = 1.0f;
+	fixture.restitution = restitution;
 
 	b->CreateFixture(&fixture);
 
@@ -167,7 +185,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateCircleBullet(int x, int y, int radius)
+PhysBody* ModulePhysics::CreateCircleBullet(int x, int y, int radius, int restitution)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
@@ -181,6 +199,7 @@ PhysBody* ModulePhysics::CreateCircleBullet(int x, int y, int radius)
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.density = 1.0f;
+	fixture.restitution = restitution;
 
 	b->CreateFixture(&fixture);
 
@@ -192,7 +211,7 @@ PhysBody* ModulePhysics::CreateCircleBullet(int x, int y, int radius)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleDynamic(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleDynamic(int x, int y, int width, int height, int restitution)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
@@ -218,7 +237,7 @@ PhysBody* ModulePhysics::CreateRectangleDynamic(int x, int y, int width, int hei
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleStatic(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleStatic(int x, int y, int width, int height, int restitution)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -231,6 +250,7 @@ PhysBody* ModulePhysics::CreateRectangleStatic(int x, int y, int width, int heig
 	b2FixtureDef fixture;
 	fixture.shape = &box;
 	fixture.density = 1.0f;
+	fixture.restitution = restitution;
 
 	b->CreateFixture(&fixture);
 
@@ -297,7 +317,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChainStatic(int x, int y, int* points, int size)
+PhysBody* ModulePhysics::CreateChainStatic(int x, int y, int* points, int size, int restitution)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -318,6 +338,7 @@ PhysBody* ModulePhysics::CreateChainStatic(int x, int y, int* points, int size)
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
+	fixture.restitution = restitution;
 
 	b->CreateFixture(&fixture);
 
@@ -331,7 +352,7 @@ PhysBody* ModulePhysics::CreateChainStatic(int x, int y, int* points, int size)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChainDynamic(int x, int y, int* points, int size)
+PhysBody* ModulePhysics::CreateChainDynamic(int x, int y, int* points, int size, int restitution)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
