@@ -92,6 +92,25 @@ bool ModulePhysics::Start()
 	fixture3.shape = &shape3;
 	b3->CreateFixture(&fixture3);
 
+	//MovingRectangle
+	
+	bodyRectKine.type = b2_kinematicBody;
+	bodyRectKine.position.Set(PIXEL_TO_METERS(70), PIXEL_TO_METERS(475));
+	bodyRectKine.linearVelocity = b2Vec2(1.0f, 0.0f);
+
+	bRectKine = world->CreateBody(&bodyRectKine);
+	b2PolygonShape box;
+	box.SetAsBox(PIXEL_TO_METERS(50) * 0.5f, PIXEL_TO_METERS(10) * 0.5f);
+
+	b2FixtureDef fixtureRectKine;
+	fixtureRectKine.shape = &box;
+	fixtureRectKine.density = 1.0f;
+
+	bRectKine->CreateFixture(&fixtureRectKine);
+
+	bRectKine->SetLinearVelocity(b2Vec2(bodyRectKine.linearVelocity.x, 0));
+
+
 	return true;
 }
 
@@ -102,6 +121,13 @@ update_status ModulePhysics::PreUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && debug == true)
 		App->physics->CreateCircleBullet(360, 630, 8);
+
+
+	if ((bRectKine->GetPosition().x < PIXEL_TO_METERS(70) && bRectKine->GetLinearVelocity().x < 0) || (bRectKine->GetPosition().x > PIXEL_TO_METERS(300) && bRectKine->GetLinearVelocity().x > 0)) {
+		bodyRectKine.linearVelocity.x *= -1;
+		bRectKine->SetLinearVelocity(b2Vec2(bodyRectKine.linearVelocity.x, 0));
+	}
+
 
 	for(b2Contact* c = world->GetContactList(); c; c = c->GetNext())
 	{
@@ -217,11 +243,13 @@ PhysBody* ModulePhysics::CreateRectangleStatic(int x, int y, int width, int heig
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleKinematic(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleKinematic(int x, int y, int width, int height, b2Vec2 linearVelocity)
 {
 	b2BodyDef body;
 	body.type = b2_kinematicBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	body.linearVelocity = linearVelocity;
+
 
 	b2Body* b = world->CreateBody(&body);
 	b2PolygonShape box;

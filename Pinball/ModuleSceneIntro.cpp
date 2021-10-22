@@ -221,13 +221,6 @@ bool ModuleSceneIntro::Start()
 
 	herradura_Shape.add(App->physics->CreateChainStatic(0, 750, down_triangles, 14));
 
-	//Moving rectangle
-
-	moving_rectangle_shape_.add(App->physics->CreateRectangleKinematic(100, 500, 50, 10));
-
-	//App->physics->CreatePrismaticJoint(250, 400, 50, 4, 450, 250, 20, 8);
-	//App->physics->CreatePrismaticJoint(App->physics->CreateRectangleKinematic(250, 250, 100, 40)->body, App->physics->CreateRectangleStatic(250, 300, 100, 100)->body);
-
 	return ret;
 }
 

@@ -47,13 +47,17 @@ public:
 	PhysBody* CreateCircleBullet(int x, int y, int radius);
 	PhysBody* CreateRectangleDynamic(int x, int y, int width, int height);
 	PhysBody* CreateRectangleStatic(int x, int y, int width, int height);
-	PhysBody* CreateRectangleKinematic(int x, int y, int width, int height);
+	PhysBody* CreateRectangleKinematic(int x, int y, int width, int height, b2Vec2 linearVelocity);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChainStatic(int x, int y, int* points, int size);
 	PhysBody* CreateChainDynamic(int x, int y, int* points, int size);	
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
+
+	//MovingRectangle
+	b2BodyDef bodyRectKine;
+	b2Body* bRectKine;
 
 	// CreateJoints
 	// Prismatic Joint
