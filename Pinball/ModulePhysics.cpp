@@ -90,8 +90,7 @@ bool ModulePhysics::Start()
 	fixture3.restitution = 0.5f;
 	b3->CreateFixture(&fixture3);*/
 
-	//MovingRectangle
-	
+	//--------------------------------------------------------------------------MovingRectangle
 	bodyRectKine.type = b2_kinematicBody;
 	bodyRectKine.position.Set(PIXEL_TO_METERS(70), PIXEL_TO_METERS(475));
 	bodyRectKine.linearVelocity = b2Vec2(1.0f, 0.0f);
@@ -108,6 +107,12 @@ bool ModulePhysics::Start()
 	bRectKine->CreateFixture(&fixtureRectKine);
 
 	bRectKine->SetLinearVelocity(b2Vec2(bodyRectKine.linearVelocity.x, 0));
+
+	pbody = new PhysBody();
+	pbody->body = bRectKine;
+	bRectKine->SetUserData(pbody);
+	pbody->width = 50 * 0.5f;
+	pbody->height = 10 * 0.5f;
 
 
 	return true;
@@ -432,7 +437,8 @@ update_status ModulePhysics::PostUpdate()
 		smallCercle1X, smallCercle1Y,
 		smallCercle2X, smallCercle2Y,
 		smallCercle3X, smallCercle3Y,
-		movingRectangleX, movingRectangleY;
+		movingRectangleX, movingRectangleY,
+		leftCenterTriangleX, leftCenterTriangleY;
 
 	bigCercle->GetPosition(bigCercleX, bigCercleY);
 	App->renderer->Blit(App->scene_intro->ballCenter, bigCercleX, bigCercleY, NULL, 1.0f, 0);
@@ -444,10 +450,11 @@ update_status ModulePhysics::PostUpdate()
 	App->renderer->Blit(App->scene_intro->smallBall, smallCercle2X, smallCercle2Y, NULL, 1.0f, 0);
 	App->renderer->Blit(App->scene_intro->smallBall, smallCercle3X, smallCercle3Y, NULL, 1.0f, 0);
 
-	/*movingRectangleX = (int)bRectKine->GetPosition().x;
-	movingRectangleY = (int)bRectKine->GetPosition().y;
-	App->renderer->Blit(App->scene_intro->movingRectangle, movingRectangleX, movingRectangleY, NULL, 1.0f, 0);*/
+	pbody->GetPosition(movingRectangleX, movingRectangleY);
+	App->renderer->Blit(App->scene_intro->movingRectangle, movingRectangleX, movingRectangleY, NULL, 1.0f, 0);
 
+	App->scene_intro->leftCenterTriangle->GetPosition(leftCenterTriangleX, leftCenterTriangleY);
+	App->renderer->Blit(App->scene_intro->leftCenterTriangleTexture, leftCenterTriangleX, leftCenterTriangleY, NULL, 1.0f, 0);
 
 
 	if(!debug)

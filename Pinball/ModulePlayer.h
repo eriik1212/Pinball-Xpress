@@ -21,6 +21,7 @@ public:
 	bool CleanUp();
 
 public:
+	PhysBody* Rflipper;
 	p2List<Flipper*> flippers;
 	SDL_Rect rectSect = { 48, 250, 64, 20 };
 };

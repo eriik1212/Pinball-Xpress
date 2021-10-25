@@ -35,8 +35,8 @@ bool ModulePlayer::Start()
     a = { 0.44,0 };
 
     Flipper* flipperR = new Flipper;
-    flipperR->Circle = App->physics->CreateCircle(110, 600, 4, b2_staticBody);
-    flipperR->Rect = App->physics->CreateRectangleDynamic(216 - rectSect.w / 2, 858 + rectSect.h / 2, rectSect.w, rectSect.h - 10, 0);
+    flipperR->Circle = App->physics->CreateCircle(PIXEL_TO_METERS(110), PIXEL_TO_METERS(600), 4, 0);
+    flipperR->Rect = App->physics->CreateRectangleDynamic(PIXEL_TO_METERS(216 - rectSect.w / 2), 858 + rectSect.h / 2, rectSect.w, rectSect.h - 10, 0);
     flipperR->rightSide = true;
     App->physics->CreateRevoluteJoint(flipperR->Rect, a, flipperR->Circle, b, 35.0f);
     flippers.add(flipperR);

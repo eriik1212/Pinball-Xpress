@@ -73,6 +73,7 @@ public:
 	//MovingRectangle
 	b2BodyDef bodyRectKine;
 	b2Body* bRectKine;
+	PhysBody* pbody;
 
 	// CreateJoints
 	// Prismatic Joint

@@ -25,6 +25,9 @@ public:
 	p2List<PhysBody*> line_Shape;
 	p2List<PhysBody*> herradura_Shape;
 
+	PhysBody* leftCenterTriangle;
+	PhysBody* rightCenterTriangle;
+
 	PhysBody* sensor;
 	bool sensed;
 
@@ -33,6 +36,7 @@ public:
 	SDL_Texture* smallBall;
 	SDL_Texture* smallTriangle1;
 	SDL_Texture* movingRectangle;
+	SDL_Texture* leftCenterTriangleTexture;
 	SDL_Texture* box;
 	SDL_Texture* pinballTexture;
 	uint bonus_fx;

@@ -30,6 +30,7 @@ bool ModuleSceneIntro::Start()
 	player = App->textures->Load("pinball/player.png");
 	smallBall = App->textures->Load("pinball/smallBall.png");
 	movingRectangle = App->textures->Load("pinball/moving_rectangle.png");
+	leftCenterTriangleTexture = App->textures->Load("pinball/textura_triangle2.png");
 	smallTriangle1 = App->textures->Load("pinball/triangle_petit1.png");
 	pinballTexture = App->textures->Load("pinball/pinball_background.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
@@ -129,12 +130,18 @@ bool ModuleSceneIntro::Start()
 		-10, 165,
 	};
 
+	// CENTER TRIANGLES
+	leftCenterTriangle = App->physics->CreateChainStatic(70, 180, triangleShape, 6, 1);
+	rightCenterTriangle = App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1);
+	/*triangle_Shape.add(App->physics->CreateChainStatic(70, 180, triangleShape, 6, 1));
+	triangle_Shape.add(App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1));*/
 
-	triangle_Shape.add(App->physics->CreateChainStatic(70, 180, triangleShape, 6, 1));
-	triangle_Shape.add(App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1));
+	// THREE TRINAGLES
 	triangle_Shape.add(App->physics->CreateChainStatic(-200, -245, triangleShape2, 6, 1));
 	triangle_Shape.add(App->physics->CreateChainStatic(-160, -260, triangleShape3, 6, 1));
 	triangle_Shape.add(App->physics->CreateChainStatic(-175, -210, triangleShape4, 6, 1));
+
+	// PALANCAS
 	triangle_Shape.add(App->physics->CreateChainStatic(110, 500, triangleShape5, 6, 0.5f));
 	triangle_Shape.add(App->physics->CreateChainStatic(200, 500, triangleShape6, 6, 0.5f));
 
@@ -267,6 +274,7 @@ update_status ModuleSceneIntro::Update()
 		App->physics->pJoint->SetMotorSpeed(-0.05*App->physics->prismDef.motorSpeed);
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE)
 		App->physics->pJoint->SetMotorSpeed(App->physics->prismDef.motorSpeed);
+
 
 	// Prepare for raycast ------------------------------------------------------
 
