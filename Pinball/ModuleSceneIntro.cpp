@@ -10,7 +10,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	circle = box = NULL;
+	ballCenter = player = box = NULL;
 	ray_on = false;
 	sensed = false;
 }
@@ -26,6 +26,11 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
+	ballCenter = App->textures->Load("pinball/bolaCentre.png");
+	player = App->textures->Load("pinball/player.png");
+	smallBall = App->textures->Load("pinball/smallBall.png");
+	movingRectangle = App->textures->Load("pinball/moving_rectangle.png");
+	smallTriangle1 = App->textures->Load("pinball/triangle_petit1.png");
 	pinballTexture = App->textures->Load("pinball/pinball_background.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
@@ -289,8 +294,7 @@ update_status ModuleSceneIntro::Update()
 	{
 		int x, y;
 		c->data->GetPosition(x, y);
-		if(c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-			App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
+		App->renderer->Blit(player, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
 	}
 
@@ -309,6 +313,8 @@ update_status ModuleSceneIntro::Update()
 		}
 		c = c->next;
 	}
+
+
 
 	// ray -----------------
 	if(ray_on == true)

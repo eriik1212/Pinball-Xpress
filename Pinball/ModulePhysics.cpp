@@ -38,22 +38,11 @@ bool ModulePhysics::Start()
 
 	//Els cercles es mouen amb la camara CANVIAR
 	//CERCLE 1 (GRAN)
-	b2BodyDef body;
-	body.type = b2_staticBody;
-	body.position.Set(3.7f, 7.9f);
-
-	b2Body* b = world->CreateBody(&body);
-
-	b2CircleShape shape;
-	shape.m_radius = 0.7f;
-
-	b2FixtureDef fixture;
-	fixture.shape = &shape;
-	fixture.restitution = 1;
-	b->CreateFixture(&fixture);
+	bigCercle = CreateCircleStatic(SCREEN_WIDTH/2, 375, 35.5, 1.5f);
 
 	//CERCLE 2 (petit)
-	b2BodyDef body1;
+	smallCercle1 = CreateCircleStatic(METERS_TO_PIXELS(6.6f), METERS_TO_PIXELS(5.0f), 5, 1);
+	/*b2BodyDef body1;
 	body1.type = b2_staticBody;
 	body1.position.Set(6.6f, 5.0f);
 
@@ -65,10 +54,12 @@ bool ModulePhysics::Start()
 	b2FixtureDef fixture1;
 	fixture1.shape = &shape1;
 	fixture1.restitution = 0.5f;
-	b1->CreateFixture(&fixture1);
+	b1->CreateFixture(&fixture1);*/
 
 	//CERCLE 3 (petit)
-	b2BodyDef body2;
+	smallCercle2 = CreateCircleStatic(METERS_TO_PIXELS(5.8f), METERS_TO_PIXELS(5.15f), 5, 1);
+
+	/*b2BodyDef body2;
 	body2.type = b2_staticBody;
 	body2.position.Set(5.8f, 5.15f);
 
@@ -80,10 +71,12 @@ bool ModulePhysics::Start()
 	b2FixtureDef fixture2;
 	fixture2.shape = &shape2;
 	fixture2.restitution = 0.5f;
-	b2->CreateFixture(&fixture2);
+	b2->CreateFixture(&fixture2);*/
 
 	//CERCLE 4 (petit)
-	b2BodyDef body3;
+	smallCercle3 = CreateCircleStatic(METERS_TO_PIXELS(5.0f), METERS_TO_PIXELS(5.5f), 5, 1);
+
+	/*b2BodyDef body3;
 	body3.type = b2_staticBody;
 	body3.position.Set(5.0f, 5.5f);
 
@@ -95,7 +88,7 @@ bool ModulePhysics::Start()
 	b2FixtureDef fixture3;
 	fixture3.shape = &shape3;
 	fixture3.restitution = 0.5f;
-	b3->CreateFixture(&fixture3);
+	b3->CreateFixture(&fixture3);*/
 
 	//MovingRectangle
 	
@@ -164,6 +157,31 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, int restitution)
 {
 	b2BodyDef body;
 	body.type = b2_dynamicBody;
+	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+
+	b2Body* b = world->CreateBody(&body);
+
+	b2CircleShape shape;
+	shape.m_radius = PIXEL_TO_METERS(radius);
+	b2FixtureDef fixture;
+	fixture.shape = &shape;
+	fixture.density = 1.0f;
+	fixture.restitution = restitution;
+
+	b->CreateFixture(&fixture);
+
+	PhysBody* pbody = new PhysBody();
+	pbody->body = b;
+	b->SetUserData(pbody);
+	pbody->width = pbody->height = radius;
+
+	return pbody;
+}
+
+PhysBody* ModulePhysics::CreateCircleStatic(int x, int y, int radius, int restitution)
+{
+	b2BodyDef body;
+	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -391,6 +409,29 @@ update_status ModulePhysics::PostUpdate()
 {
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
+
+	// Positions
+	int bigCercleX, bigCercleY, 
+		smallCercle1X, smallCercle1Y,
+		smallCercle2X, smallCercle2Y,
+		smallCercle3X, smallCercle3Y,
+		movingRectangleX, movingRectangleY;
+
+	bigCercle->GetPosition(bigCercleX, bigCercleY);
+	App->renderer->Blit(App->scene_intro->ballCenter, bigCercleX, bigCercleY, NULL, 1.0f, 0);
+
+	smallCercle1->GetPosition(smallCercle1X, smallCercle1Y);
+	smallCercle2->GetPosition(smallCercle2X, smallCercle2Y);
+	smallCercle3->GetPosition(smallCercle3X, smallCercle3Y);
+	App->renderer->Blit(App->scene_intro->smallBall, smallCercle1X, smallCercle1Y, NULL, 1.0f, 0);
+	App->renderer->Blit(App->scene_intro->smallBall, smallCercle2X, smallCercle2Y, NULL, 1.0f, 0);
+	App->renderer->Blit(App->scene_intro->smallBall, smallCercle3X, smallCercle3Y, NULL, 1.0f, 0);
+
+	/*movingRectangleX = (int)bRectKine->GetPosition().x;
+	movingRectangleY = (int)bRectKine->GetPosition().y;
+	App->renderer->Blit(App->scene_intro->movingRectangle, movingRectangleX, movingRectangleY, NULL, 1.0f, 0);*/
+
+
 
 	if(!debug)
 		return UPDATE_CONTINUE;

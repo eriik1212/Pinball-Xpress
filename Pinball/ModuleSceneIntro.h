@@ -28,7 +28,11 @@ public:
 	PhysBody* sensor;
 	bool sensed;
 
-	SDL_Texture* circle;
+	SDL_Texture* ballCenter;
+	SDL_Texture* player;
+	SDL_Texture* smallBall;
+	SDL_Texture* smallTriangle1;
+	SDL_Texture* movingRectangle;
 	SDL_Texture* box;
 	SDL_Texture* pinballTexture;
 	uint bonus_fx;

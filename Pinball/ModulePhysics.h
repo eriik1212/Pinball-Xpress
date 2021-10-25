@@ -44,6 +44,7 @@ public:
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius, int restitution);
+	PhysBody* CreateCircleStatic(int x, int y, int radius, int restitution);
 	PhysBody* CreateCircleBullet(int x, int y, int radius, int restitution);
 	PhysBody* CreateRectangleDynamic(int x, int y, int width, int height, int restitution);
 	PhysBody* CreateRectangleStatic(int x, int y, int width, int height, int restitution);
@@ -56,6 +57,12 @@ public:
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
+
+	// Elements Hitboxes
+	PhysBody* bigCercle;
+	PhysBody* smallCercle1;
+	PhysBody* smallCercle2;
+	PhysBody* smallCercle3;
 
 	//MovingRectangle
 	b2BodyDef bodyRectKine;
