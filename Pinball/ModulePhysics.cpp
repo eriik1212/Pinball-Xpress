@@ -404,6 +404,23 @@ PhysBody* ModulePhysics::CreateChainDynamic(int x, int y, int* points, int size,
 	return pbody;
 }
 
+b2RevoluteJoint* ModulePhysics::CreateRevoluteJoint(PhysBody* A, b2Vec2 anchorA, PhysBody* B, b2Vec2 anchorB, float angle, bool collideConnected, bool enableLimit)
+{
+	b2RevoluteJointDef RevJointDef;
+	RevJointDef.bodyA = A->body;
+	RevJointDef.bodyB = B->body;
+	RevJointDef.collideConnected = collideConnected;
+	RevJointDef.localAnchorA.Set(anchorA.x, anchorA.y);
+	RevJointDef.localAnchorA.Set(anchorB.x, anchorB.y);
+	RevJointDef.referenceAngle = 0;
+	RevJointDef.enableLimit = enableLimit;
+	RevJointDef.lowerAngle = -DEG_TO_RAD(angle);
+	RevJointDef.upperAngle = DEG_TO_RAD(angle);
+
+	return (b2RevoluteJoint*)world->CreateJoint(&RevJointDef);
+
+
+}
 // 
 update_status ModulePhysics::PostUpdate()
 {
@@ -613,12 +630,5 @@ void ModulePhysics::CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB)
 
 
 	pJoint = (b2PrismaticJoint*) world->CreateJoint(&prismDef);
-
-}
-
-void ModulePhysics::CreateRevoluteJoint(b2Body* bodyA, b2Body* bodyB)
-{
-
-
 
 }
