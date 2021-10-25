@@ -426,7 +426,15 @@ update_status ModulePhysics::PostUpdate()
 {
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
-
+	if (!debug)
+	{
+		if (mouse_joint != nullptr)
+		{
+			world->DestroyJoint(mouse_joint);
+			mouse_joint = nullptr;
+		}
+		return UPDATE_CONTINUE;
+	}
 	// Positions
 	int bigCercleX, bigCercleY, 
 		smallCercle1X, smallCercle1Y,
@@ -462,70 +470,110 @@ update_status ModulePhysics::PostUpdate()
 			switch (f->GetType())
 			{
 				// Draw circles ------------------------------------------------
-			case b2Shape::e_circle:
-			{
+				case b2Shape::e_circle:
+				{
 				b2CircleShape* shape = (b2CircleShape*)f->GetShape();
 				b2Vec2 pos = f->GetBody()->GetPosition();
 				App->renderer->DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), METERS_TO_PIXELS(shape->m_radius), 255, 255, 255);
-			}
-			break;
-
-			// Draw polygons ------------------------------------------------
-			case b2Shape::e_polygon:
-			{
-				b2PolygonShape* polygonShape = (b2PolygonShape*)f->GetShape();
-				int32 count = polygonShape->GetVertexCount();
-				b2Vec2 prev, v;
-
-				for (int32 i = 0; i < count; ++i)
-				{
-					v = b->GetWorldPoint(polygonShape->GetVertex(i));
-					if (i > 0)
-						App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
-
-					prev = v;
 				}
+				break;
 
-				v = b->GetWorldPoint(polygonShape->GetVertex(0));
-				App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
-			}
-			break;
-
-			// Draw chains contour -------------------------------------------
-			case b2Shape::e_chain:
-			{
-				b2ChainShape* shape = (b2ChainShape*)f->GetShape();
-				b2Vec2 prev, v;
-
-				for (int32 i = 0; i < shape->m_count; ++i)
+				// Draw polygons ------------------------------------------------
+				case b2Shape::e_polygon:
 				{
-					v = b->GetWorldPoint(shape->m_vertices[i]);
-					if (i > 0)
-						App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
-					prev = v;
+					b2PolygonShape* polygonShape = (b2PolygonShape*)f->GetShape();
+					int32 count = polygonShape->GetVertexCount();
+					b2Vec2 prev, v;
+
+					for (int32 i = 0; i < count; ++i)
+					{
+						v = b->GetWorldPoint(polygonShape->GetVertex(i));
+						if (i > 0)
+							App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
+
+						prev = v;
+					}
+
+					v = b->GetWorldPoint(polygonShape->GetVertex(0));
+					App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
 				}
+				break;
 
-				v = b->GetWorldPoint(shape->m_vertices[0]);
-				App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+				// Draw chains contour -------------------------------------------
+				case b2Shape::e_chain:
+				{
+					b2ChainShape* shape = (b2ChainShape*)f->GetShape();
+					b2Vec2 prev, v;
+
+					for (int32 i = 0; i < shape->m_count; ++i)
+					{
+						v = b->GetWorldPoint(shape->m_vertices[i]);
+						if (i > 0)
+							App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+						prev = v;
+					}
+
+					v = b->GetWorldPoint(shape->m_vertices[0]);
+					App->renderer->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+				}
+				break;
+
+				// Draw a single segment(edge) ----------------------------------
+				case b2Shape::e_edge:
+				{
+					b2EdgeShape* shape = (b2EdgeShape*)f->GetShape();
+					b2Vec2 v1, v2;
+
+					v1 = b->GetWorldPoint(shape->m_vertex0);
+					v1 = b->GetWorldPoint(shape->m_vertex1);
+					App->renderer->DrawLine(METERS_TO_PIXELS(v1.x), METERS_TO_PIXELS(v1.y), METERS_TO_PIXELS(v2.x), METERS_TO_PIXELS(v2.y), 100, 100, 255);
+				}
+				break;
 			}
-			break;
-
-			// Draw a single segment(edge) ----------------------------------
-			case b2Shape::e_edge:
+			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 			{
-				b2EdgeShape* shape = (b2EdgeShape*)f->GetShape();
-				b2Vec2 v1, v2;
+				p = { PIXEL_TO_METERS(App->input->GetMouseX()), PIXEL_TO_METERS(App->input->GetMouseY()) };
+				if (f->GetShape()->TestPoint(b->GetTransform(), p) == true)
+				{
+					mouseBody = b;
 
-				v1 = b->GetWorldPoint(shape->m_vertex0);
-				v1 = b->GetWorldPoint(shape->m_vertex1);
-				App->renderer->DrawLine(METERS_TO_PIXELS(v1.x), METERS_TO_PIXELS(v1.y), METERS_TO_PIXELS(v2.x), METERS_TO_PIXELS(v2.y), 100, 100, 255);
-			}
-			break;
-			}
+					b2Vec2 mousePosition;
+					mousePosition.x = p.x;
+					mousePosition.y = p.y;
 
+					b2MouseJointDef def;
+					def.bodyA = ground;
+					def.bodyB = mouseBody;
+					def.target = mousePosition;
+					def.dampingRatio = 0.5f;
+					def.frequencyHz = 2.0f;
+					def.maxForce = 100.0f * mouseBody->GetMass();
+
+					mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
+				}
+			}
+		}
+
+	}
+	if (mouseBody != nullptr && mouse_joint != nullptr)
+	{
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+		{
+			b2Vec2 mousePosition;
+			mousePosition.x = PIXEL_TO_METERS(App->input->GetMouseX());
+			mousePosition.y = PIXEL_TO_METERS(App->input->GetMouseY());
+			mouse_joint->SetTarget(mousePosition);
+
+			App->renderer->DrawLine(METERS_TO_PIXELS(mouseBody->GetPosition().x), METERS_TO_PIXELS(mouseBody->GetPosition().y), App->input->GetMouseX(), App->input->GetMouseY(), 255, 0, 0);
+		}
+
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+		{
+			world->DestroyJoint(mouse_joint);
+			mouse_joint = nullptr;
+			mouseBody = nullptr;
 		}
 	}
-
 	return UPDATE_CONTINUE;
 }
 

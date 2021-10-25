@@ -80,6 +80,7 @@ public:
 	b2PrismaticJoint* pJoint;
 	void CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB);
 	b2RevoluteJoint* CreateRevoluteJoint(PhysBody* A, b2Vec2 anchorA, PhysBody* B, b2Vec2 anchorB, float angle = 0.0f, bool collideConnected = false, bool enableLimit = true);
+	
 
 private:
 
@@ -87,4 +88,7 @@ private:
 	b2World* world;
 	b2MouseJoint* mouse_joint;
 	b2Body* ground;
+
+	b2Body* mouseBody;
+	b2Vec2 p;
 };
