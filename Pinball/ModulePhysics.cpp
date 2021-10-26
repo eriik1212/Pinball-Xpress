@@ -446,7 +446,8 @@ update_status ModulePhysics::PostUpdate()
 		smallTriangle3X, smallTriangle3Y,
 		LShapeLeftX, LShapeLeftY,
 		LShapeRightX, LShapeRightY,
-		herraduraX, herraduraY;
+		herraduraX, herraduraY,
+		springX, springY;
 
 	bigCercle->GetPosition(bigCercleX, bigCercleY);
 	App->renderer->Blit(App->scene_intro->ballCenter, bigCercleX, bigCercleY, NULL, 1.0f, 0);
@@ -481,6 +482,9 @@ update_status ModulePhysics::PostUpdate()
 
 	App->scene_intro->herradura->GetPosition(herraduraX, herraduraY);
 	App->renderer->Blit(App->scene_intro->herraduraTexture, herraduraX + 319, herraduraY + 872, NULL, 1.0f, 0);
+
+	App->scene_intro->spring->GetPosition(springX, springY);
+	App->renderer->Blit(App->scene_intro->springTexture, springX, springY, NULL, 1.0f, 0);
 
 	if (!debug)
 	{

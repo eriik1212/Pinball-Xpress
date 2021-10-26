@@ -24,7 +24,11 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	fuente();
+
 	App->renderer->camera.x = App->renderer->camera.y = 0;
+
+	font = App->textures->Load("pinball/nums_score.png");
 
 	ballCenter = App->textures->Load("pinball/bolaCentre.png");
 	player = App->textures->Load("pinball/player.png");
@@ -39,6 +43,9 @@ bool ModuleSceneIntro::Start()
 	LShapeRightTexture = App->textures->Load("pinball/textura_vaca2.png");
 	herraduraTexture = App->textures->Load("pinball/herradura.png");
 	pinballTexture = App->textures->Load("pinball/pinball_background.png");
+	box = App->textures->Load("pinball/quadrats.png");
+	springTexture = App->textures->Load("pinball/muelle.png");
+
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	sensor = App->physics->CreateRectangleSensor(185.5f, 750, 125, 10);
@@ -86,13 +93,13 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreatePrismaticJoint(App->physics->CreateRectangleDynamic(361, 700, 20, 10, 0)->body, App->physics->CreateRectangleStatic(361, 710, 20, 10, 0)->body);
 
 	//Squares At Left-Side
-	App->physics->CreateRectangleStatic(30, 340, 10, 10, 1);
-	App->physics->CreateRectangleStatic(30, 360, 10, 10, 1);
-	App->physics->CreateRectangleStatic(30, 380, 10, 10, 1);
-	App->physics->CreateRectangleStatic(30, 400, 10, 10, 1);
+	boxes.add(App->physics->CreateRectangleStatic(30, 340, 10, 10, 1));
+	boxes.add(App->physics->CreateRectangleStatic(30, 360, 10, 10, 1));
+	boxes.add(App->physics->CreateRectangleStatic(30, 380, 10, 10, 1));
+	boxes.add(App->physics->CreateRectangleStatic(30, 400, 10, 10, 1));
 
 	//Rectangles At Left-Down-Side
-	App->physics->CreateRectangleStatic(20, 680, 20, 30, 2);
+	spring = App->physics->CreateRectangleStatic(20, 680, 20, 30, 2);
 
 	//Separation Betwenn Ball Spawn and Map
 	App->physics->CreateRectangleStatic(348, 440, 2, 440, 0);
@@ -324,12 +331,12 @@ update_status ModuleSceneIntro::Update()
 		int x, y;
 		c->data->GetPosition(x, y);
 		App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-		if(ray_on)
+		/*if(ray_on)
 		{
 			int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
 			if(hit >= 0)
 				ray_hit = hit;
-		}
+		}*/
 		c = c->next;
 	}
 
@@ -348,7 +355,28 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
 
+	imprimir_fuente();
+
 	return UPDATE_CONTINUE;
+}
+
+void ModuleSceneIntro::fuente()
+{
+	for (int x = 0; x < 10; x++) {
+		nums[x] = { x * 22, 0, 23,44 };
+	}
+}
+
+void ModuleSceneIntro::imprimir_fuente() {
+	score = 0;
+	int score_temp = score;
+	for (int i = 8; i >= 0; i--) {
+
+		int temp = score_temp % 10;
+		App->renderer->Blit(font, i * 22, 0, &nums[temp]);
+		score_temp = score_temp / 10;
+	}
+
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
