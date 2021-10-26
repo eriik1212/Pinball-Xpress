@@ -55,32 +55,33 @@ update_status ModulePlayer::Update()
 {
     
 
-        // Flippers --------------------------------------------------
-        if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-        {
-            p2List_item<Flipper*>* f = flippers.getFirst();
-            while (f != NULL)
-            {
-                if (f->data->rightSide == false)
-                {
-                    f->data->Rect->body->ApplyForce({ -3,0 }, { 0,0 }, true);
-                }
-                f = f->next;
-            }
-        }
-        if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-        {
-            p2List_item<Flipper*>* f = flippers.getFirst();
-            while (f != NULL)
-            {
-                if (f->data->rightSide == true)
-                {
-                    f->data->Rect->body->ApplyForce({ 3,0 }, { 0,0 }, true);
-                }
-                f = f->next;
-            }
-        }
-        return UPDATE_CONTINUE;
+    // Flippers --------------------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		p2List_item<Flipper*>* f = flippers.getFirst();
+		while (f != NULL)
+		{
+			if (f->data->rightSide == false)
+			{
+				f->data->Rect->body->ApplyForce({ -3,0 }, { 0,0 }, true);
+			}
+			f = f->next;
+		}
+	}
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		p2List_item<Flipper*>* f = flippers.getFirst();
+		while (f != NULL)
+		{
+			if (f->data->rightSide == true)
+			{
+				f->data->Rect->body->ApplyForce({ 3,0 }, { 0,0 }, true);
+			}
+			f = f->next;
+		}
+
+	}
+    return UPDATE_CONTINUE;
   
 }
 
