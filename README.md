@@ -3,7 +3,7 @@
 ## TEAM MEMBERS:
 
   * David Boces 
-  * Erik Garcia
+  * Erik Martín
   * Pau Olmos
  
 ## CONTROLS:
