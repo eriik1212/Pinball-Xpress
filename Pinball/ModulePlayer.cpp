@@ -24,7 +24,7 @@ bool ModulePlayer::Start()
     b2Vec2 a = { -0.44, 0 };
     b2Vec2 b = { 0, 0 };
 
-    //Implementació dels flippers
+    //Implementaciï¿½ dels flippers
     Flipper* f = new Flipper;
     f->Circle = App->physics->CreateCircle(SCREEN_WIDTH/2+20, 390, 50, b2_staticBody);
     f->Rect = App->physics->CreateRectangleDynamic(72 + rectSect.w / 2, 858 + rectSect.h / 2, rectSect.w, rectSect.h - 10, 0);
@@ -56,7 +56,7 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
-    
+
 
         // Flippers --------------------------------------------------
         if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
@@ -110,12 +110,10 @@ update_status ModulePlayer::Update()
         }
 
         return UPDATE_CONTINUE;
-  
+
 }
 
 void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
     App->audio->PlayFx(App->scene_intro->bonus_fx);
 }
-
-
