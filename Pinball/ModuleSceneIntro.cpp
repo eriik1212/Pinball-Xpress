@@ -31,7 +31,13 @@ bool ModuleSceneIntro::Start()
 	smallBall = App->textures->Load("pinball/smallBall.png");
 	movingRectangle = App->textures->Load("pinball/moving_rectangle.png");
 	leftCenterTriangleTexture = App->textures->Load("pinball/textura_triangle2.png");
-	smallTriangle1 = App->textures->Load("pinball/triangle_petit1.png");
+	rightCenterTriangleTexture = App->textures->Load("pinball/textura_triangle1.png");
+	smallTriangle1Texture = App->textures->Load("pinball/triangle_petit1.png");
+	smallTriangle2Texture = App->textures->Load("pinball/triangle_petit2.png");
+	smallTriangle3Texture = App->textures->Load("pinball/triangle_petit3.png");
+	LShapeLeftTexture = App->textures->Load("pinball/textura_vaca1.png");
+	LShapeRightTexture = App->textures->Load("pinball/textura_vaca2.png");
+	herraduraTexture = App->textures->Load("pinball/herradura.png");
 	pinballTexture = App->textures->Load("pinball/pinball_background.png");
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
@@ -137,13 +143,16 @@ bool ModuleSceneIntro::Start()
 	triangle_Shape.add(App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1));*/
 
 	// THREE TRINAGLES
-	triangle_Shape.add(App->physics->CreateChainStatic(-200, -245, triangleShape2, 6, 1));
+	smallTriangle1 = App->physics->CreateChainStatic(-200, -245, triangleShape2, 6, 1);
+	smallTriangle2 = App->physics->CreateChainStatic(-160, -260, triangleShape3, 6, 1);
+	smallTriangle3 = App->physics->CreateChainStatic(-175, -210, triangleShape4, 6, 1);
+	/*triangle_Shape.add(App->physics->CreateChainStatic(-200, -245, triangleShape2, 6, 1));
 	triangle_Shape.add(App->physics->CreateChainStatic(-160, -260, triangleShape3, 6, 1));
-	triangle_Shape.add(App->physics->CreateChainStatic(-175, -210, triangleShape4, 6, 1));
+	triangle_Shape.add(App->physics->CreateChainStatic(-175, -210, triangleShape4, 6, 1));*/
 
 	// PALANCAS
-	triangle_Shape.add(App->physics->CreateChainStatic(110, 500, triangleShape5, 6, 0.5f));
-	triangle_Shape.add(App->physics->CreateChainStatic(200, 500, triangleShape6, 6, 0.5f));
+	/*triangle_Shape.add(App->physics->CreateChainStatic(110, 500, triangleShape5, 6, 0.5f));
+	triangle_Shape.add(App->physics->CreateChainStatic(200, 500, triangleShape6, 6, 0.5f));*/
 
 	int line1[12] = {
 		420, 705,
@@ -163,13 +172,15 @@ bool ModuleSceneIntro::Start()
 		345, 645
 	};
 
-	int line3[4] = {
+	/*int line3[4] = {
 		348, -111,
 		348, -511
-	};
+	};*/
 
-	line_Shape.add(App->physics->CreateChainStatic(-305, -45, line1, 12, 0));
-	line_Shape.add(App->physics->CreateChainStatic(-35, -45, line2, 12, 0));
+	LShapeLeft = App->physics->CreateChainStatic(-305, -45, line1, 12, 0);
+	LShapeRight = App->physics->CreateChainStatic(-35, -45, line2, 12, 0);
+	/*line_Shape.add(App->physics->CreateChainStatic(-305, -45, line1, 12, 0));
+	line_Shape.add(App->physics->CreateChainStatic(-35, -45, line2, 12, 0));*/
 	//line_Shape.add(App->physics->CreateChainStatic(0, 750, line3, 4)); //S'ha de declarar com a edge
 
 	// Pivot 0, -1024
@@ -212,7 +223,7 @@ bool ModuleSceneIntro::Start()
 		355, 896
 	};
 
-	herradura_Shape.add(App->physics->CreateChainStatic(-250, -660, herradura1, 72, 1));
+	herradura = App->physics->CreateChainStatic(-250, -660, herradura1, 72, 1);
 
 	int vaquero[34] = {
 		356, -607,
