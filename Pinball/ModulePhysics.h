@@ -92,4 +92,5 @@ private:
 
 	b2Body* mouseBody;
 	b2Vec2 p;
+	p2List<b2RevoluteJoint*> revoluteList;
 };

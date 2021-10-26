@@ -6,6 +6,13 @@
 
 class PhysBody;
 
+enum Scene
+{
+	TITLE_SCREEN,
+	PINBALL,
+	GAME_OVER
+};
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -44,6 +51,8 @@ public:
 
 	PhysBody* sensor;
 	bool sensed;
+
+	Scene currentScene;
 
 	SDL_Texture* ballCenter;
 	SDL_Texture* player;
