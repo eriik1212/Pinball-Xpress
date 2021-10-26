@@ -17,7 +17,16 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
+	void imprimir_fuente();
+	void fuente();
+
 public:
+
+	//SCORE
+	SDL_Rect nums[10];
+	uint score = 000000;
+	SDL_Texture* font;
+
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> pinballShape;
@@ -31,6 +40,7 @@ public:
 	PhysBody* LShapeLeft;
 	PhysBody* LShapeRight;
 	PhysBody* herradura;
+	PhysBody* spring;
 
 	PhysBody* sensor;
 	bool sensed;
@@ -48,6 +58,7 @@ public:
 	SDL_Texture* LShapeRightTexture;
 	SDL_Texture* herraduraTexture;
 	SDL_Texture* box;
+	SDL_Texture* springTexture;
 	SDL_Texture* pinballTexture;
 	uint bonus_fx;
 	p2Point<int> ray;
