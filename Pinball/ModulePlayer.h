@@ -19,9 +19,14 @@ public:
 	bool Start();
 	update_status Update();
 	bool CleanUp();
+	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 public:
 	PhysBody* Rflipper;
 	p2List<Flipper*> flippers;
 	SDL_Rect rectSect = { 48, 250, 64, 20 };
+
+	//---------------------------------------Ball
+	int countBall = 3;
+	bool isDead = false;
 };

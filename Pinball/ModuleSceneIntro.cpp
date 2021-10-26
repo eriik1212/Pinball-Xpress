@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "ModulePlayer.h"
 
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -24,7 +25,7 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	fuente();
+	Font();
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
@@ -45,10 +46,12 @@ bool ModuleSceneIntro::Start()
 	pinballTexture = App->textures->Load("pinball/pinball_background.png");
 	box = App->textures->Load("pinball/quadrats.png");
 	springTexture = App->textures->Load("pinball/muelle.png");
+	canonTexture = App->textures->Load("pinball/cano.png");
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
-	sensor = App->physics->CreateRectangleSensor(185.5f, 750, 125, 10);
+	CreateSensor(App->physics->CreateRectangleSensor(185.5f, 750, 125, 10, 0), Sensor::DEATH, false);
+	CreateSensor(App->physics->CreateRectangleSensor(348, 196, 16, 4, 2), Sensor::CLOSE_GATE, false);
 
 	// Pivot 2, -751
 	int pinball_shape[66] = {
@@ -83,26 +86,27 @@ bool ModuleSceneIntro::Start()
 		34, -42,
 		34, -102,
 		123, -51,
-		123, 0,
-		248, 0
+		123, 20,
+		248, 20
 	};
 
 	pinballShape.add(App->physics->CreateChainStatic(0, 750, pinball_shape, 66, 0));
 
 	//KICKER JOINT
-	App->physics->CreatePrismaticJoint(App->physics->CreateRectangleDynamic(361, 700, 20, 10, 0)->body, App->physics->CreateRectangleStatic(361, 710, 20, 10, 0)->body);
+	kicker = App->physics->CreateRectangleStatic(361, 710, 20, 10, 0, 0);
+	App->physics->CreatePrismaticJoint(App->physics->CreateRectangleDynamic(361, 700, 20, 10, 0)->body, kicker->body);
 
 	//Squares At Left-Side
-	boxes.add(App->physics->CreateRectangleStatic(30, 340, 10, 10, 1));
-	boxes.add(App->physics->CreateRectangleStatic(30, 360, 10, 10, 1));
-	boxes.add(App->physics->CreateRectangleStatic(30, 380, 10, 10, 1));
-	boxes.add(App->physics->CreateRectangleStatic(30, 400, 10, 10, 1));
+	boxes.add(App->physics->CreateRectangleStatic(30, 340, 10, 10, 1, 0));
+	boxes.add(App->physics->CreateRectangleStatic(30, 360, 10, 10, 1, 0));
+	boxes.add(App->physics->CreateRectangleStatic(30, 380, 10, 10, 1, 0));
+	boxes.add(App->physics->CreateRectangleStatic(30, 400, 10, 10, 1, 0));
 
 	//Rectangles At Left-Down-Side
-	spring = App->physics->CreateRectangleStatic(20, 680, 20, 30, 2);
+	spring = App->physics->CreateRectangleStatic(20, 680, 20, 30, 2, 0);
 
 	//Separation Betwenn Ball Spawn and Map
-	App->physics->CreateRectangleStatic(348, 440, 2, 440, 0);
+	App->physics->CreateRectangleStatic(348, 440, 2, 440, 0, NULL);
 
 	int triangleShape[6] = {
 		5, 400,
@@ -293,6 +297,16 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE)
 		App->physics->pJoint->SetMotorSpeed(App->physics->prismDef.motorSpeed);
 
+	//----------------------------------------------------------CloseGate
+	if (closeGate && closeGateBody == NULL)
+	{
+		closeGateBody = App->physics->CreateRectangleStatic(356, 208, 20, 4, 0, 2);
+	}
+	else if (!closeGate && closeGateBody != NULL)
+	{
+		closeGateBody->body->GetWorld()->DestroyBody(closeGateBody->body);
+		closeGateBody = NULL;
+	}
 
 	// Prepare for raycast ------------------------------------------------------
 
@@ -355,19 +369,19 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
 
-	imprimir_fuente();
+	PrintFont();
 
 	return UPDATE_CONTINUE;
 }
 
-void ModuleSceneIntro::fuente()
+void ModuleSceneIntro::Font()
 {
 	for (int x = 0; x < 10; x++) {
 		nums[x] = { x * 22, 0, 23,44 };
 	}
 }
 
-void ModuleSceneIntro::imprimir_fuente() {
+void ModuleSceneIntro::PrintFont() {
 	score = 0;
 	int score_temp = score;
 	for (int i = 8; i >= 0; i--) {
@@ -379,22 +393,65 @@ void ModuleSceneIntro::imprimir_fuente() {
 
 }
 
+void ModuleSceneIntro::CreateSensor(PhysBody* sensor, Sensor::sensorValue sensorType, bool isActive)
+{
+	Sensor* newSensor = new Sensor;
+	newSensor->sensor = sensor;
+	newSensor->sensor->listener = this;
+	newSensor->value = sensorType;
+	newSensor->isActive = isActive;
+	sensors.add(newSensor);
+}
+
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	int x, y;
 
-	App->audio->PlayFx(bonus_fx);
 
-	/*
-	if(bodyA)
+	// Sensors
+	p2List_item<Sensor*>* s = sensors.getFirst();
+	while (s != NULL)
 	{
-		bodyA->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
+
+		if (bodyA == s->data->sensor && bodyB->listener == (Module*)App->player)
+		{
+			App->audio->PlayFx(bonus_fx);
+
+			switch (s->data->value)
+			{
+			case Sensor::DEATH:
+			{
+				p2List_item<Sensor*>* reset;
+				App->audio->PlayFx(bonus_fx);
+				App->player->isDead = true;
+				closeGate = false;
+				reset = sensors.getFirst();
+				return;
+			}
+			case Sensor::CLOSE_GATE:
+			{
+				p2List_item<Sensor*>* reset;
+				closeGate = true;
+			}
+				default:
+					return;
+			}
+		}
+		s = s->next;
 	}
 
-	if(bodyB)
-	{
-		bodyB->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
-	}*/
+	/*
+if(bodyA)
+{
+	bodyA->GetPosition(x, y);
+	App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
 }
+
+if(bodyB)
+{
+	bodyB->GetPosition(x, y);
+	App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
+}*/
+}
+
+

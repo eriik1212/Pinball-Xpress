@@ -53,9 +53,9 @@ public:
 	PhysBody* CreateCircleStatic(int x, int y, int radius, int restitution);
 	PhysBody* CreateCircleBullet(int x, int y, int radius, int restitution);
 	PhysBody* CreateRectangleDynamic(int x, int y, int width, int height, int restitution);
-	PhysBody* CreateRectangleStatic(int x, int y, int width, int height, int restitution);
+	PhysBody* CreateRectangleStatic(int x, int y, int width, int height, int restitution, int angle);
 	PhysBody* CreateRectangleKinematic(int x, int y, int width, int height, b2Vec2 linearVelocity);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, int angle);
 	PhysBody* CreateChainStatic(int x, int y, int* points, int size, int restitution);
 	PhysBody* CreateChainDynamic(int x, int y, int* points, int size, int restitution);
 
@@ -82,12 +82,13 @@ public:
 	void CreatePrismaticJoint(b2Body* bodyA, b2Body* bodyB);
 	b2RevoluteJoint* CreateRevoluteJoint(PhysBody* A, b2Vec2 anchorA, PhysBody* B, b2Vec2 anchorB, float angle = 0.0f, bool collideConnected = false, bool enableLimit = true);
 	
+	b2MouseJoint* mouse_joint;
 
 private:
 
 	bool debug;
 	b2World* world;
-	b2MouseJoint* mouse_joint;
+
 	b2Body* ground;
 
 	b2Body* mouseBody;

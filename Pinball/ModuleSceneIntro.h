@@ -13,6 +13,19 @@ enum Scene
 	GAME_OVER
 };
 
+struct Sensor {
+	enum sensorValue
+	{
+		NONE = -1,
+		DEATH,
+		CLOSE_GATE
+	};
+	PhysBody* sensor;
+	sensorValue value;
+	bool isActive;
+	int sensorTimer = 0;
+};
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -23,13 +36,18 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
+	void CreateSensor(PhysBody* sensor, Sensor::sensorValue sensorType, bool isActive);
 
-	void imprimir_fuente();
-	void fuente();
+	void PrintFont();
+	void Font();
 
 public:
+	//--------------------------SENSORS
+	p2List<Sensor*> sensors;
 
-	//SCORE
+	bool closeGate = false;
+
+	//--------------------------SCORE
 	SDL_Rect nums[10];
 	uint score = 000000;
 	SDL_Texture* font;
@@ -48,6 +66,8 @@ public:
 	PhysBody* LShapeRight;
 	PhysBody* herradura;
 	PhysBody* spring;
+	PhysBody* kicker;
+	PhysBody* closeGateBody;
 
 	PhysBody* sensor;
 	bool sensed;
@@ -69,6 +89,7 @@ public:
 	SDL_Texture* box;
 	SDL_Texture* springTexture;
 	SDL_Texture* pinballTexture;
+	SDL_Texture* canonTexture;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;

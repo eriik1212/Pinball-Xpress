@@ -41,7 +41,7 @@ bool ModulePhysics::Start()
 	bigCercle = CreateCircleStatic(SCREEN_WIDTH/2, 375, 35.5, 1.5f);
 
 	//CERCLE 2 (petit)
-	smallCercle1 = CreateCircleStatic(METERS_TO_PIXELS(6.6f), METERS_TO_PIXELS(5.0f), 5, 1);
+	smallCercle1 = CreateCircleStatic(METERS_TO_PIXELS(6.4f), METERS_TO_PIXELS(5.0f), 5, 1);
 	/*b2BodyDef body1;
 	body1.type = b2_staticBody;
 	body1.position.Set(6.6f, 5.0f);
@@ -57,7 +57,7 @@ bool ModulePhysics::Start()
 	b1->CreateFixture(&fixture1);*/
 
 	//CERCLE 3 (petit)
-	smallCercle2 = CreateCircleStatic(METERS_TO_PIXELS(5.8f), METERS_TO_PIXELS(5.15f), 5, 1);
+	smallCercle2 = CreateCircleStatic(METERS_TO_PIXELS(5.6f), METERS_TO_PIXELS(5.15f), 5, 1);
 
 	/*b2BodyDef body2;
 	body2.type = b2_staticBody;
@@ -74,7 +74,7 @@ bool ModulePhysics::Start()
 	b2->CreateFixture(&fixture2);*/
 
 	//CERCLE 4 (petit)
-	smallCercle3 = CreateCircleStatic(METERS_TO_PIXELS(5.0f), METERS_TO_PIXELS(5.5f), 5, 1);
+	smallCercle3 = CreateCircleStatic(METERS_TO_PIXELS(4.8f), METERS_TO_PIXELS(5.5f), 5, 1);
 
 	/*b2BodyDef body3;
 	body3.type = b2_staticBody;
@@ -126,14 +126,14 @@ update_status ModulePhysics::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && debug == true)
 	{
 		App->scene_intro->circles.add(CreateCircleBullet(360, 630, 8, 0));
-		App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
+		App->scene_intro->circles.getLast()->data->listener = (Module*)App->player;
 	}
 
 
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && debug == true)
 	{
 		App->scene_intro->circles.add(CreateCircleBullet(App->input->GetMouseX(), App->input->GetMouseY(), 8, 0));
-		App->scene_intro->circles.getLast()->data->listener = App->scene_intro;
+		App->scene_intro->circles.getLast()->data->listener = (Module*)App->player;
 	}
 
 
@@ -260,15 +260,16 @@ PhysBody* ModulePhysics::CreateRectangleDynamic(int x, int y, int width, int hei
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleStatic(int x, int y, int width, int height, int restitution)
+PhysBody* ModulePhysics::CreateRectangleStatic(int x, int y, int width, int height, int restitution, int angle)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-
+	
 	b2Body* b = world->CreateBody(&body);
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
+	b->SetTransform(b->GetPosition(), angle);
 
 	b2FixtureDef fixture;
 	fixture.shape = &box;
@@ -313,13 +314,15 @@ PhysBody* ModulePhysics::CreateRectangleKinematic(int x, int y, int width, int h
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, int angle)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
+	b->SetTransform(b->GetPosition(), angle);
+
 
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
@@ -447,7 +450,8 @@ update_status ModulePhysics::PostUpdate()
 		LShapeLeftX, LShapeLeftY,
 		LShapeRightX, LShapeRightY,
 		herraduraX, herraduraY,
-		springX, springY;
+		springX, springY,
+		kickerX, kickerY;
 
 	bigCercle->GetPosition(bigCercleX, bigCercleY);
 	App->renderer->Blit(App->scene_intro->ballCenter, bigCercleX, bigCercleY, NULL, 1.0f, 0);
@@ -485,6 +489,9 @@ update_status ModulePhysics::PostUpdate()
 
 	App->scene_intro->spring->GetPosition(springX, springY);
 	App->renderer->Blit(App->scene_intro->springTexture, springX, springY, NULL, 1.0f, 0);
+
+	App->scene_intro->kicker->GetPosition(kickerX, kickerY);
+	App->renderer->Blit(App->scene_intro->canonTexture, kickerX - 10, kickerY - 60, NULL, 1.0f, 0);
 
 	if (!debug)
 	{

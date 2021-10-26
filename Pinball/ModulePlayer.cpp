@@ -40,6 +40,9 @@ bool ModulePlayer::Start()
     f2->rightSide = true;
     App->physics->CreateRevoluteJoint(f2->Rect, a, f2->Circle, b, 35.0f);
     flippers.add(f2);
+
+    //----------------------------------------Ball
+    isDead = false;
 }
 
 // Unload assets
@@ -80,9 +83,39 @@ update_status ModulePlayer::Update()
                 f = f->next;
             }
         }
+
+        // Game Overs ----------------------------------------------------
+        if (isDead)
+        {
+            isDead = false;
+            if (App->physics->mouse_joint != nullptr)
+            {
+                App->physics->mouse_joint->GetBodyA()->GetWorld()->DestroyJoint(App->physics->mouse_joint);
+                App->physics->mouse_joint = nullptr;
+            }
+            p2List_item<PhysBody*>* c = App->scene_intro->circles.getFirst();
+            while (c != NULL)
+            {
+                c->data->body->GetWorld()->DestroyBody(c->data->body);
+                c = c->next;
+            }
+            App->scene_intro->circles.clear();
+
+            countBall--;
+            if (countBall >= 0)
+            {
+                App->scene_intro->circles.add(App->physics->CreateCircle(360, 630, 8, 0));
+                App->scene_intro->circles.getLast()->data->listener = (Module*)App->player;
+            }
+        }
+
         return UPDATE_CONTINUE;
   
 }
 
+void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
+{
+    App->audio->PlayFx(App->scene_intro->bonus_fx);
+}
 
 
