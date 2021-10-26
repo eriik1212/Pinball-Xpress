@@ -431,22 +431,22 @@ update_status ModulePhysics::PostUpdate()
 {
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
-	if (!debug)
-	{
-		if (mouse_joint != nullptr)
-		{
-			world->DestroyJoint(mouse_joint);
-			mouse_joint = nullptr;
-		}
-		return UPDATE_CONTINUE;
-	}
+
+	// ------------------------------------------------------------------------------------- Blit Objects
 	// Positions
-	int bigCercleX, bigCercleY, 
+	int bigCercleX, bigCercleY,
 		smallCercle1X, smallCercle1Y,
 		smallCercle2X, smallCercle2Y,
 		smallCercle3X, smallCercle3Y,
 		movingRectangleX, movingRectangleY,
-		leftCenterTriangleX, leftCenterTriangleY;
+		leftCenterTriangleX, leftCenterTriangleY,
+		rightCenterTriangleX, rightCenterTriangleY,
+		smallTriangle1X, smallTriangle1Y,
+		smallTriangle2X, smallTriangle2Y,
+		smallTriangle3X, smallTriangle3Y,
+		LShapeLeftX, LShapeLeftY,
+		LShapeRightX, LShapeRightY,
+		herraduraX, herraduraY;
 
 	bigCercle->GetPosition(bigCercleX, bigCercleY);
 	App->renderer->Blit(App->scene_intro->ballCenter, bigCercleX, bigCercleY, NULL, 1.0f, 0);
@@ -462,8 +462,37 @@ update_status ModulePhysics::PostUpdate()
 	App->renderer->Blit(App->scene_intro->movingRectangle, movingRectangleX, movingRectangleY, NULL, 1.0f, 0);
 
 	App->scene_intro->leftCenterTriangle->GetPosition(leftCenterTriangleX, leftCenterTriangleY);
-	App->renderer->Blit(App->scene_intro->leftCenterTriangleTexture, leftCenterTriangleX, leftCenterTriangleY, NULL, 1.0f, 0);
+	App->renderer->Blit(App->scene_intro->leftCenterTriangleTexture, leftCenterTriangleX, leftCenterTriangleY + 340, NULL, 1.0f, 0);
 
+	App->scene_intro->rightCenterTriangle->GetPosition(rightCenterTriangleX, rightCenterTriangleY);
+	App->renderer->Blit(App->scene_intro->rightCenterTriangleTexture, rightCenterTriangleX - 40, leftCenterTriangleY + 340, NULL, 1.0f, 0);
+
+	App->scene_intro->smallTriangle1->GetPosition(smallTriangle1X, smallTriangle1Y);
+	App->scene_intro->smallTriangle2->GetPosition(smallTriangle2X, smallTriangle2Y);
+	App->scene_intro->smallTriangle3->GetPosition(smallTriangle3X, smallTriangle3Y);
+	App->renderer->Blit(App->scene_intro->smallTriangle1Texture, smallTriangle1X + 524, smallTriangle1Y + 540, NULL, 1.0f, 0);
+	App->renderer->Blit(App->scene_intro->smallTriangle2Texture, smallTriangle2X + 444, smallTriangle2Y + 570, NULL, 1.0f, 0);
+	App->renderer->Blit(App->scene_intro->smallTriangle3Texture, smallTriangle3X + 482, smallTriangle3Y + 556, NULL, 1.0f, 0);
+
+	App->scene_intro->LShapeLeft->GetPosition(LShapeLeftX, LShapeLeftY);
+	App->scene_intro->LShapeRight->GetPosition(LShapeRightX, LShapeRightY);
+	App->renderer->Blit(App->scene_intro->LShapeLeftTexture, LShapeLeftX + 345, LShapeLeftY + 546, NULL, 1.0f, 0);
+	App->renderer->Blit(App->scene_intro->LShapeRightTexture, LShapeRightX + 270, LShapeRightY + 546, NULL, 1.0f, 0);
+
+	App->scene_intro->herradura->GetPosition(herraduraX, herraduraY);
+	App->renderer->Blit(App->scene_intro->herraduraTexture, herraduraX + 319, herraduraY + 872, NULL, 1.0f, 0);
+
+	if (!debug)
+	{
+		if (mouse_joint != nullptr)
+		{
+			world->DestroyJoint(mouse_joint);
+			mouse_joint = nullptr;
+		}
+		return UPDATE_CONTINUE;
+	}
+
+	
 
 	if(!debug)
 		return UPDATE_CONTINUE;

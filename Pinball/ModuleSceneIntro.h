@@ -21,12 +21,16 @@ public:
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> pinballShape;
-	p2List<PhysBody*> triangle_Shape;
-	p2List<PhysBody*> line_Shape;
 	p2List<PhysBody*> herradura_Shape;
 
 	PhysBody* leftCenterTriangle;
 	PhysBody* rightCenterTriangle;
+	PhysBody* smallTriangle1;
+	PhysBody* smallTriangle2;
+	PhysBody* smallTriangle3;
+	PhysBody* LShapeLeft;
+	PhysBody* LShapeRight;
+	PhysBody* herradura;
 
 	PhysBody* sensor;
 	bool sensed;
@@ -34,9 +38,15 @@ public:
 	SDL_Texture* ballCenter;
 	SDL_Texture* player;
 	SDL_Texture* smallBall;
-	SDL_Texture* smallTriangle1;
+	SDL_Texture* smallTriangle1Texture;
+	SDL_Texture* smallTriangle2Texture;
+	SDL_Texture* smallTriangle3Texture;
 	SDL_Texture* movingRectangle;
 	SDL_Texture* leftCenterTriangleTexture;
+	SDL_Texture* rightCenterTriangleTexture;
+	SDL_Texture* LShapeLeftTexture;
+	SDL_Texture* LShapeRightTexture;
+	SDL_Texture* herraduraTexture;
 	SDL_Texture* box;
 	SDL_Texture* pinballTexture;
 	uint bonus_fx;
