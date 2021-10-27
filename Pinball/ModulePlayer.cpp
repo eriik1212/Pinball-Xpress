@@ -124,9 +124,22 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     //ALL THREE SMALL CIRCLES
     if (bodyA == App->scene_intro->circles.getLast()->data
         && (bodyB == App->physics->smallCercle1
-        || bodyB == App->physics->smallCercle2
-        || bodyB == App->physics->smallCercle3))
+            || bodyB == App->physics->smallCercle2
+            || bodyB == App->physics->smallCercle3))
+    {
         App->scene_intro->score += 175;
+
+        //CoMbOOOO!
+        if (bodyB == App->physics->smallCercle1)
+            App->scene_intro->comboBall1 = true;
+
+        if (bodyB == App->physics->smallCercle2)
+            App->scene_intro->comboBall2 = true;
+
+        if (bodyB == App->physics->smallCercle3)
+            App->scene_intro->comboBall3 = true;
+    }
+        
 
     //MOVING PLATFORM
     if (bodyA == App->scene_intro->circles.getLast()->data
@@ -154,7 +167,19 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
         && (bodyB == App->scene_intro->smallTriangle1
             || bodyB == App->scene_intro->smallTriangle2
             || bodyB == App->scene_intro->smallTriangle3))
+    {
         App->scene_intro->score += 150;
+
+        //Let's Make a CombOOooOOoOoO
+        if (bodyB == App->scene_intro->smallTriangle1)
+            App->scene_intro->comboTrian1 = true;
+
+        if (bodyB == App->scene_intro->smallTriangle2)
+            App->scene_intro->comboTrian2 = true;
+    
+        if (bodyB == App->scene_intro->smallTriangle3)
+            App->scene_intro->comboTrian3 = true;
+    }
 
     //TWO DOWN-CENTER TRIANGLES
     if (bodyA == App->scene_intro->circles.getLast()->data

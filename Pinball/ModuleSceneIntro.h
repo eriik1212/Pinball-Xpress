@@ -52,6 +52,14 @@ public:
 	uint score = 000000;
 	SDL_Texture* font;
 
+	//----------COMBO!
+	bool comboTrian1 = false,
+		comboTrian2 = false,
+		comboTrian3 = false,
+		comboBall1 = false,
+		comboBall2 = false,
+		comboBall3 = false;
+
 	p2List<PhysBody*> circles;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> pinballShape;

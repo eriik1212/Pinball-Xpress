@@ -58,6 +58,14 @@ bool ModuleSceneIntro::Start()
 	CreateSensor(App->physics->CreateRectangleSensor(185.5f, 750, 125, 10, 0), Sensor::DEATH, false);
 	CreateSensor(App->physics->CreateRectangleSensor(348, 196, 16, 4, 2), Sensor::CLOSE_GATE, false);
 
+	// Init Combos!
+	comboTrian1 = false;
+	comboTrian2 = false;
+	comboTrian3 = false;
+	comboBall1 = false;
+	comboBall2 = false;
+	comboBall3 = false;
+
 	// Pivot 2, -751
 	int pinball_shape[66] = {
 		248, -52,
@@ -153,8 +161,8 @@ bool ModuleSceneIntro::Start()
 	};
 
 	// CENTER TRIANGLES
-	leftCenterTriangle = App->physics->CreateChainStatic(70, 180, triangleShape, 6, 1);
-	rightCenterTriangle = App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1);
+	leftCenterTriangle = App->physics->CreateChainStatic(70, 180, triangleShape, 6, 2);
+	rightCenterTriangle = App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 2);
 	/*triangle_Shape.add(App->physics->CreateChainStatic(70, 180, triangleShape, 6, 1));
 	triangle_Shape.add(App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1));*/
 
@@ -292,6 +300,25 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 
+	// COMBO!
+	if (comboTrian1 && comboTrian2 && comboTrian3)
+	{
+		score += 10000;
+		comboTrian1 = false;
+		comboTrian2 = false;
+		comboTrian3 = false;
+	}
+
+	//MORE COMBOOOOS!!!
+	if (comboBall1 && comboBall2 && comboBall3)
+	{
+		score += 15000;
+		App->player->countBall += 1;
+		comboBall1 = false;
+		comboBall2 = false;
+		comboBall3 = false;
+	}
+
 	//---------------------------------------------------------------------------------------ShootPlatformMovement (KICKER)
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		App->physics->pJoint->SetMotorSpeed(-0.05*App->physics->prismDef.motorSpeed);
@@ -384,13 +411,16 @@ void ModuleSceneIntro::Font()
 
 void ModuleSceneIntro::PrintFont() {
 
-	int score_temp = score;
+	int score_temp = score,
+		balls_temp = App->player->countBall;
 	for (int i = 8; i >= 0; i--) {
 
 		int temp = score_temp % 10;
 		App->renderer->Blit(font, i * 22, 0, &nums[temp]);
 		score_temp = score_temp / 10;
 	}
+
+	App->renderer->Blit(font, 326, 0, &nums[balls_temp]);
 
 }
 
@@ -432,6 +462,7 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			{
 				p2List_item<Sensor*>* reset;
 				closeGate = true;
+				return;
 			}
 				default:
 					return;
