@@ -25,6 +25,10 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	closeGate = false;
+	closeGateBody = nullptr;
+	App->player->countBall = 3;
+	score = 0;
 	Font();
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
@@ -47,6 +51,7 @@ bool ModuleSceneIntro::Start()
 	box = App->textures->Load("pinball/quadrats.png");
 	springTexture = App->textures->Load("pinball/muelle.png");
 	canonTexture = App->textures->Load("pinball/cano.png");
+	gateTexture = App->textures->Load("pinball/gate.png");
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
@@ -278,18 +283,14 @@ bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
+	App->textures->Unload(pinballTexture);
+
 	return true;
 }
 
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	/*if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		ray_on = !ray_on;
-		ray.x = App->input->GetMouseX();
-		ray.y = App->input->GetMouseY();
-	}*/
 
 	//---------------------------------------------------------------------------------------ShootPlatformMovement (KICKER)
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
@@ -298,14 +299,14 @@ update_status ModuleSceneIntro::Update()
 		App->physics->pJoint->SetMotorSpeed(App->physics->prismDef.motorSpeed);
 
 	//----------------------------------------------------------CloseGate
-	if (closeGate && closeGateBody == NULL)
+	if (closeGate && closeGateBody == nullptr)
 	{
 		closeGateBody = App->physics->CreateRectangleStatic(356, 208, 20, 4, 0, 2);
 	}
-	else if (!closeGate && closeGateBody != NULL)
+	else if (!closeGate && closeGateBody != nullptr)
 	{
 		closeGateBody->body->GetWorld()->DestroyBody(closeGateBody->body);
-		closeGateBody = NULL;
+		closeGateBody = nullptr;
 	}
 
 	// Prepare for raycast ------------------------------------------------------
@@ -382,7 +383,7 @@ void ModuleSceneIntro::Font()
 }
 
 void ModuleSceneIntro::PrintFont() {
-	score = 0;
+
 	int score_temp = score;
 	for (int i = 8; i >= 0; i--) {
 
@@ -406,7 +407,6 @@ void ModuleSceneIntro::CreateSensor(PhysBody* sensor, Sensor::sensorValue sensor
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	int x, y;
-
 
 	// Sensors
 	p2List_item<Sensor*>* s = sensors.getFirst();

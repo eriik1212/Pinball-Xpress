@@ -90,6 +90,7 @@ public:
 	SDL_Texture* springTexture;
 	SDL_Texture* pinballTexture;
 	SDL_Texture* canonTexture;
+	SDL_Texture* gateTexture;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;

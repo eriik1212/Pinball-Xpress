@@ -17,7 +17,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 {
 	world = NULL;
 	mouse_joint = NULL;
-	debug = true;
+	debug = false;
 }
 
 // Destructor
@@ -32,6 +32,10 @@ bool ModulePhysics::Start()
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 	world->SetContactListener(this);
 
+	//FirstBall
+	App->scene_intro->circles.add(CreateCircleBullet(360, 630, 8, 0));
+	App->scene_intro->circles.getLast()->data->listener = (Module*)App->player;
+
 	// needed to create joints like mouse joint
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
@@ -42,53 +46,12 @@ bool ModulePhysics::Start()
 
 	//CERCLE 2 (petit)
 	smallCercle1 = CreateCircleStatic(METERS_TO_PIXELS(6.4f), METERS_TO_PIXELS(5.0f), 5, 1);
-	/*b2BodyDef body1;
-	body1.type = b2_staticBody;
-	body1.position.Set(6.6f, 5.0f);
-
-	b2Body* b1 = world->CreateBody(&body1);
-
-	b2CircleShape shape1;
-	shape1.m_radius = 0.1f;
-
-	b2FixtureDef fixture1;
-	fixture1.shape = &shape1;
-	fixture1.restitution = 0.5f;
-	b1->CreateFixture(&fixture1);*/
 
 	//CERCLE 3 (petit)
 	smallCercle2 = CreateCircleStatic(METERS_TO_PIXELS(5.6f), METERS_TO_PIXELS(5.15f), 5, 1);
 
-	/*b2BodyDef body2;
-	body2.type = b2_staticBody;
-	body2.position.Set(5.8f, 5.15f);
-
-	b2Body* b2 = world->CreateBody(&body2);
-
-	b2CircleShape shape2;
-	shape2.m_radius = 0.1f;
-
-	b2FixtureDef fixture2;
-	fixture2.shape = &shape2;
-	fixture2.restitution = 0.5f;
-	b2->CreateFixture(&fixture2);*/
-
 	//CERCLE 4 (petit)
 	smallCercle3 = CreateCircleStatic(METERS_TO_PIXELS(4.8f), METERS_TO_PIXELS(5.5f), 5, 1);
-
-	/*b2BodyDef body3;
-	body3.type = b2_staticBody;
-	body3.position.Set(5.0f, 5.5f);
-
-	b2Body* b3 = world->CreateBody(&body3);
-
-	b2CircleShape shape3;
-	shape3.m_radius = 0.1f;
-
-	b2FixtureDef fixture3;
-	fixture3.shape = &shape3;
-	fixture3.restitution = 0.5f;
-	b3->CreateFixture(&fixture3);*/
 
 	//--------------------------------------------------------------------------MovingRectangle
 	bodyRectKine.type = b2_kinematicBody;
@@ -451,7 +414,8 @@ update_status ModulePhysics::PostUpdate()
 		LShapeRightX, LShapeRightY,
 		herraduraX, herraduraY,
 		springX, springY,
-		kickerX, kickerY;
+		kickerX, kickerY,
+		gateX = NULL, gateY = NULL;
 
 	bigCercle->GetPosition(bigCercleX, bigCercleY);
 	App->renderer->Blit(App->scene_intro->ballCenter, bigCercleX, bigCercleY, NULL, 1.0f, 0);
@@ -492,6 +456,13 @@ update_status ModulePhysics::PostUpdate()
 
 	App->scene_intro->kicker->GetPosition(kickerX, kickerY);
 	App->renderer->Blit(App->scene_intro->canonTexture, kickerX - 10, kickerY - 60, NULL, 1.0f, 0);
+
+	if (App->scene_intro->closeGate)
+	{
+		App->scene_intro->closeGateBody->GetPosition(gateX, gateY);
+		App->renderer->Blit(App->scene_intro->gateTexture, gateX, gateY, NULL, 1.0f, 114.0);
+
+	}
 
 	if (!debug)
 	{
