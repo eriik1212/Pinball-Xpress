@@ -161,8 +161,8 @@ bool ModuleSceneIntro::Start()
 	};
 
 	// CENTER TRIANGLES
-	leftCenterTriangle = App->physics->CreateChainStatic(70, 180, triangleShape, 6, 2);
-	rightCenterTriangle = App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 2);
+	leftCenterTriangle = App->physics->CreateChainStatic(70, 180, triangleShape, 6, 1.5);
+	rightCenterTriangle = App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1.5);
 	/*triangle_Shape.add(App->physics->CreateChainStatic(70, 180, triangleShape, 6, 1));
 	triangle_Shape.add(App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1));*/
 
