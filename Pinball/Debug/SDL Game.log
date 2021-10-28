@@ -1,3 +1,86 @@
-﻿  Main.cpp
-C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\Main.cpp(101,13): warning C4244: 'argumento': conversión de 'float' a 'DWORD'; posible pérdida de datos
+﻿  Application.cpp
+  ModulePhysics.cpp
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(47,60): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(47,54): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(79,20): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(80,21): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(94,15): warning C4305: 'argumento': truncamiento de 'double' a 'float32'
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(174,24): warning C4244: '=': conversión de 'int' a 'float32'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(199,24): warning C4244: '=': conversión de 'int' a 'float32'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(225,24): warning C4244: '=': conversión de 'int' a 'float32'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(257,23): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(258,25): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(272,36): warning C4244: 'argumento': conversión de 'int' a 'float32'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(277,24): warning C4244: '=': conversión de 'int' a 'float32'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(284,23): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(285,25): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(311,23): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(312,25): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(324,36): warning C4244: 'argumento': conversión de 'int' a 'float32'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(357,20): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(367,24): warning C4244: '=': conversión de 'int' a 'float32'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(392,21): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(703,13): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(704,13): warning C4244: 'inicializando': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModulePhysics.cpp(710,27): warning C4244: 'return': conversión de 'float32' a 'int'; posible pérdida de datos
+  ModulePlayer.cpp
+  ModuleSceneIntro.cpp
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(66,51): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(172,82): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(173,85): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(333,44): warning C4244: 'argumento': conversión de 'double' a 'float32'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(399,45): warning C4244: 'argumento': conversión de 'TYPE' a 'TYPE'; posible pérdida de datos
+          with
+          [
+              TYPE=int
+          ]
+          and
+          [
+              TYPE=float
+          ]
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(399,30): warning C4244: 'argumento': conversión de 'TYPE' a 'TYPE'; posible pérdida de datos
+          with
+          [
+              TYPE=int
+          ]
+          and
+          [
+              TYPE=float
+          ]
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(401,18): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(403,70): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(403,47): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(406,138): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(406,96): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(406,57): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(406,34): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(452,9): warning C4101: 'y': variable local sin referencia
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(452,6): warning C4101: 'x': variable local sin referencia
+C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(476,27): warning C4101: 'reset': variable local sin referencia
+  Generando código...
+  LINK : no se encontró C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\Debug\2D Physics - class 4.exe o no lo generó el último vínculo incremental; ejecutando vínculo completo
   SDL Game.vcxproj -> C:\Users\david\OneDrive\Escritorio\UNI\A2\S3\PhysicsII\PINBALL\Pinball-Xpress\Pinball\Debug\2D Physics - class 4.exe
