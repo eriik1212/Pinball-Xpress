@@ -38,7 +38,7 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void CreateSensor(PhysBody* sensor, Sensor::sensorValue sensorType, bool isActive);
 
-	void PrintFont();
+	void PrintFont(int x, int y);
 	void Font();
 
 public:
@@ -47,6 +47,7 @@ public:
 
 	bool closeGate = false;
 
+	SDL_Rect looseScreen;
 	//--------------------------SCORE
 	SDL_Rect nums[10];
 	uint score = 000000;
@@ -99,6 +100,8 @@ public:
 	SDL_Texture* pinballTexture;
 	SDL_Texture* canonTexture;
 	SDL_Texture* gateTexture;
+	SDL_Texture* lose_screen;
+
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;

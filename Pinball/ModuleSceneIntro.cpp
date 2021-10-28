@@ -25,6 +25,12 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	looseScreen.x = 0;
+	looseScreen.y = 0;
+	looseScreen.w = 250;
+	looseScreen.h = 510;
+
+
 	closeGate = false;
 	closeGateBody = nullptr;
 	App->player->countBall = 3;
@@ -33,6 +39,7 @@ bool ModuleSceneIntro::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
+	lose_screen = App->textures->Load("pinball/lose_screen.png");
 	font = App->textures->Load("pinball/nums_score.png");
 
 	ballCenter = App->textures->Load("pinball/bolaCentre.png");
@@ -52,6 +59,7 @@ bool ModuleSceneIntro::Start()
 	springTexture = App->textures->Load("pinball/muelle.png");
 	canonTexture = App->textures->Load("pinball/cano.png");
 	gateTexture = App->textures->Load("pinball/gate.png");
+	lose_screen = App->textures->Load("pinball/lose_screen.png");
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
@@ -282,7 +290,7 @@ bool ModuleSceneIntro::Start()
 	};
 
 	herradura_Shape.add(App->physics->CreateChainStatic(0, 750, down_triangles, 14, 0));
-
+	
 	return ret;
 }
 
@@ -300,6 +308,7 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 
+	
 	// COMBO!
 	if (comboTrian1 && comboTrian2 && comboTrian3)
 	{
@@ -397,7 +406,10 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
 
-	PrintFont();
+	PrintFont (22, 0);
+
+
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -409,20 +421,21 @@ void ModuleSceneIntro::Font()
 	}
 }
 
-void ModuleSceneIntro::PrintFont() {
+void ModuleSceneIntro::PrintFont(int x, int y) {
 
 	int score_temp = score,
 		balls_temp = App->player->countBall;
 	for (int i = 8; i >= 0; i--) {
-
 		int temp = score_temp % 10;
-		App->renderer->Blit(font, i * 22, 0, &nums[temp]);
+		App->renderer->Blit(font, i *x, y, &nums[temp]);
 		score_temp = score_temp / 10;
 	}
 
 	App->renderer->Blit(font, 326, 0, &nums[balls_temp]);
 
 }
+
+
 
 void ModuleSceneIntro::CreateSensor(PhysBody* sensor, Sensor::sensorValue sensorType, bool isActive)
 {

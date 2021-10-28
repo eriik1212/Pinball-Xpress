@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "ModulePlayer.h"
 #include "Box2D/Box2D/Box2D.h"
 #include "Box2D/Box2D/Dynamics/Joints/b2PrismaticJoint.h"
 
@@ -58,7 +59,6 @@ public:
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, int angle);
 	PhysBody* CreateChainStatic(int x, int y, int* points, int size, int restitution);
 	PhysBody* CreateChainDynamic(int x, int y, int* points, int size, int restitution);
-
 	PhysBody* ballBullet;
 
 	// b2ContactListener ---

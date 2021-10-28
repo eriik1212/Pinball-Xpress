@@ -7,6 +7,7 @@
 #include "math.h"
 #include "ModuleSceneIntro.h"
 
+
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
 #else
@@ -375,6 +376,8 @@ PhysBody* ModulePhysics::CreateChainDynamic(int x, int y, int* points, int size,
 	return pbody;
 }
 
+
+
 b2RevoluteJoint* ModulePhysics::CreateRevoluteJoint(PhysBody* A, b2Vec2 anchorA, PhysBody* B, b2Vec2 anchorB, float angle, bool collideConnected, bool enableLimit)
 {
 	b2RevoluteJointDef RevJointDef;
@@ -397,6 +400,7 @@ update_status ModulePhysics::PostUpdate()
 {
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
+
 
 	// ------------------------------------------------------------------------------------- Blit Objects
 	// Positions
@@ -592,6 +596,12 @@ update_status ModulePhysics::PostUpdate()
 			mouseBody = nullptr;
 		}
 	}
+
+	if (App->player->countBall < 0) {
+		App->renderer->Blit(App->scene_intro->lose_screen, 60, 110, &App->scene_intro->looseScreen);
+		App->scene_intro->PrintFont(150,200);
+	}
+
 	return UPDATE_CONTINUE;
 }
 
