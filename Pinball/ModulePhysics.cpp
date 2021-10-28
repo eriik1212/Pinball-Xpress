@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "math.h"
 #include "ModuleSceneIntro.h"
+#include "ModulePlayer.h"
 
 
 #ifdef _DEBUG
@@ -18,7 +19,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 {
 	world = NULL;
 	mouse_joint = NULL;
-	debug = false;
+	debug = true;
 }
 
 // Destructor
@@ -78,6 +79,27 @@ bool ModulePhysics::Start()
 	pbody->width = 50 * 0.5f;
 	pbody->height = 10 * 0.5f;
 
+	b2Vec2 a = { 1, 0 };
+	b2Vec2 b = { -0.5, 0 };
+
+	b2Vec2 c = { 0.5, 0 };
+
+	f = new Flipper;
+	f->Circle = App->physics->CreateCircleStatic(SCREEN_WIDTH / 2 + 45, 655, 6, 0);
+	f->Rect = App->physics->CreateRectangleDynamic(SCREEN_WIDTH / 2 + 40,655, App->player->rectSect.w-20, App->player->rectSect.h - 10,0);
+	f->rightSide = false;
+	App->physics->CreateRevoluteJoint(f->Rect, a, f->Circle, c, 35.0f);
+	App->player->flippers.add(f);
+
+	a = { 0.44,0 };
+
+	f2 = new Flipper;
+	f2->Circle = App->physics->CreateCircleStatic(SCREEN_WIDTH / 2 - 70, 655, 6, 0);
+	f2->Rect = App->physics->CreateRectangleDynamic(SCREEN_WIDTH / 2 - 55, 655, App->player->rectSect.w-20, App->player->rectSect.h - 10, 0);
+	f2->rightSide = true;
+	App->physics->CreateRevoluteJoint(f2->Rect, a, f2->Circle, b, 35.0f);
+	App->player->flippers.add(f2);
+
 
 	return true;
 }
@@ -86,6 +108,20 @@ bool ModulePhysics::Start()
 update_status ModulePhysics::PreUpdate()
 {
 	world->Step(1.0f / 60.0f, 6, 2);
+
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		f2->Rect->body->ApplyForce(b2Vec2(-2, 0), b2Vec2(15, 0), true);
+
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		f->Rect->body->ApplyForce(b2Vec2(2, 0), b2Vec2(-15, 0), true);
+			
+	}
+
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && debug == true)
 	{
