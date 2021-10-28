@@ -19,7 +19,7 @@ ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app,
 {
 	world = NULL;
 	mouse_joint = NULL;
-	debug = true;
+	debug = false;
 }
 
 // Destructor
@@ -456,7 +456,9 @@ update_status ModulePhysics::PostUpdate()
 		herraduraX, herraduraY,
 		springX, springY,
 		kickerX, kickerY,
-		gateX = NULL, gateY = NULL;
+		gateX = NULL, gateY = NULL,
+		flipperRX, flipperRY,
+		flipperLX, flipperLY;
 
 	bigCercle->GetPosition(bigCercleX, bigCercleY);
 	App->renderer->Blit(App->scene_intro->ballCenter, bigCercleX, bigCercleY, NULL, 1.0f, 0);
@@ -498,12 +500,39 @@ update_status ModulePhysics::PostUpdate()
 	App->scene_intro->kicker->GetPosition(kickerX, kickerY);
 	App->renderer->Blit(App->scene_intro->canonTexture, kickerX - 10, kickerY - 60, NULL, 1.0f, 0);
 
+	App->physics->f->Rect->GetPosition(flipperRX, flipperRY);
+	App->renderer->Blit(App->scene_intro->flipperL, flipperRX, flipperRY, NULL, 1.0f, App->physics->f->Rect->GetRotation());
+
+	App->physics->f2->Rect->GetPosition(flipperLX, flipperLY);
+	App->renderer->Blit(App->scene_intro->flipperR, flipperLX, flipperLY, NULL, 1.0f, App->physics->f2->Rect->GetRotation());
+
 
 	if (App->scene_intro->closeGate)
 	{
 		App->scene_intro->closeGateBody->GetPosition(gateX, gateY);
 		App->renderer->Blit(App->scene_intro->gateTexture, gateX, gateY, NULL, 1.0f, 114.0);
 
+	}
+
+	if (App->player->countBall < 0) {
+		App->renderer->Blit(App->scene_intro->lose_screen, 60, 110, &App->scene_intro->looseScreen);
+		App->scene_intro->PrintFont(90, 290, App->scene_intro->score);
+		App->scene_intro->PrintFont(90, 410, App->scene_intro->previous_score);
+		App->scene_intro->PrintFont(90, 510, App->scene_intro->highscore);
+		if (App->scene_intro->score > App->scene_intro->previous_score) {
+			App->scene_intro->highscore = App->scene_intro->score;
+		}
+		if (App->scene_intro->score >= App->scene_intro->highscore && App->scene_intro->score != 0) {
+			App->scene_intro->highscore = App->scene_intro->score;
+			App->renderer->Blit(App->scene_intro->highscore_, 255, 265, &App->scene_intro->High);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			App->scene_intro->previous_score = App->scene_intro->score;
+			App->player->countBall = 3;
+			App->scene_intro->circles.add(CreateCircleBullet(360, 630, 8, 0));
+			App->scene_intro->circles.getLast()->data->listener = (Module*)App->player;
+			App->scene_intro->score = 0;
+		}
 	}
 
 	if (!debug)
@@ -632,27 +661,6 @@ update_status ModulePhysics::PostUpdate()
 			world->DestroyJoint(mouse_joint);
 			mouse_joint = nullptr;
 			mouseBody = nullptr;
-		}
-	}
-
-	if (App->player->countBall < 0) {
-		App->renderer->Blit(App->scene_intro->lose_screen, 60, 110, &App->scene_intro->looseScreen);
-		App->scene_intro->PrintFont(90,290,App->scene_intro->score);
-		App->scene_intro->PrintFont(90, 410, App->scene_intro->previous_score);
-		App->scene_intro->PrintFont(90, 510, App->scene_intro->highscore);
-		if (App->scene_intro->score > App->scene_intro->previous_score) {
-			App->scene_intro->highscore = App->scene_intro->score;
-		}
-		if (App->scene_intro->score >= App->scene_intro->highscore && App->scene_intro->score!=0) {
-			App->scene_intro->highscore = App->scene_intro->score;
-			App->renderer->Blit(App->scene_intro->highscore_, 255, 265,&App->scene_intro->High);
-		}
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-			App->scene_intro->previous_score = App->scene_intro->score;
-			App->player->countBall = 3;
-			App->scene_intro->circles.add(CreateCircleBullet(360, 630, 8, 0));
-			App->scene_intro->circles.getLast()->data->listener = (Module*)App->player;
-			App->scene_intro->score = 0;
 		}
 	}
 

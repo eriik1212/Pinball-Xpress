@@ -107,6 +107,8 @@ public:
 	SDL_Texture* lose_screen;
 	SDL_Texture* highscore_;
 	SDL_Texture* cora;
+	SDL_Texture* flipperR;
+	SDL_Texture* flipperL;
 
 	uint bonus_fx;
 	p2Point<int> ray;

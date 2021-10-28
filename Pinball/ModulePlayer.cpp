@@ -20,10 +20,6 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	return true;
-
-   
-
-    //Implementaci� dels flippers
    
     //----------------------------------------Ball
     isDead = false;

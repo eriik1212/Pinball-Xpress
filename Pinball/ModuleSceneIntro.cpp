@@ -72,6 +72,8 @@ bool ModuleSceneIntro::Start()
 	gateTexture = App->textures->Load("pinball/gate.png");
 	lose_screen = App->textures->Load("pinball/lose_screen.png");
 	highscore_ = App->textures->Load("pinball/highscore.png");
+	flipperR = App->textures->Load("pinball/flipperR.png");
+	flipperL = App->textures->Load("pinball/flipperL.png");
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
