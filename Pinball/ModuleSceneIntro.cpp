@@ -30,10 +30,20 @@ bool ModuleSceneIntro::Start()
 	looseScreen.w = 250;
 	looseScreen.h = 510;
 
+	High.x = 0;
+	High.y = 0;
+	High.w = 63;
+	High.h = 48;
+
+	cora_.x = 0;
+	cora_.y = 0;
+	cora_.w = 37;
+	cora_.h = 34;
 
 	closeGate = false;
 	closeGateBody = nullptr;
 	App->player->countBall = 3;
+
 	score = 0;
 	Font();
 
@@ -41,6 +51,7 @@ bool ModuleSceneIntro::Start()
 
 	lose_screen = App->textures->Load("pinball/lose_screen.png");
 	font = App->textures->Load("pinball/nums_score.png");
+	cora = App->textures->Load("pinball/corazon.png");
 
 	ballCenter = App->textures->Load("pinball/bolaCentre.png");
 	player = App->textures->Load("pinball/player.png");
@@ -60,6 +71,7 @@ bool ModuleSceneIntro::Start()
 	canonTexture = App->textures->Load("pinball/cano.png");
 	gateTexture = App->textures->Load("pinball/gate.png");
 	lose_screen = App->textures->Load("pinball/lose_screen.png");
+	highscore_ = App->textures->Load("pinball/highscore.png");
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
@@ -362,6 +374,8 @@ update_status ModuleSceneIntro::Update()
 		int x, y;
 		c->data->GetPosition(x, y);
 		App->renderer->Blit(pinballTexture, 0, 0, NULL, 1.0f, c->data->GetRotation());
+
+		App->renderer->Blit(cora, 310, 5, &App->scene_intro->cora_);
 		c = c->next;
 	}
 
@@ -406,10 +420,7 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
 
-	PrintFont (22, 0);
-
-
-	
+	PrintFont (22, 0, score);
 
 	return UPDATE_CONTINUE;
 }
@@ -421,17 +432,17 @@ void ModuleSceneIntro::Font()
 	}
 }
 
-void ModuleSceneIntro::PrintFont(int x, int y) {
+void ModuleSceneIntro::PrintFont(int x, int y, uint score_) {
 
-	int score_temp = score,
+	int score_temp = score_,
 		balls_temp = App->player->countBall;
 	for (int i = 8; i >= 0; i--) {
 		int temp = score_temp % 10;
-		App->renderer->Blit(font, i *x, y, &nums[temp]);
+		App->renderer->Blit(font, i *22+x, y, &nums[temp]);
 		score_temp = score_temp / 10;
 	}
 
-	App->renderer->Blit(font, 326, 0, &nums[balls_temp]);
+	App->renderer->Blit(font, 352, 0, &nums[balls_temp]);
 
 }
 

@@ -38,7 +38,7 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void CreateSensor(PhysBody* sensor, Sensor::sensorValue sensorType, bool isActive);
 
-	void PrintFont(int x, int y);
+	void PrintFont(int x, int y, uint score_);
 	void Font();
 
 public:
@@ -48,9 +48,13 @@ public:
 	bool closeGate = false;
 
 	SDL_Rect looseScreen;
-	//--------------------------SCORE
+	SDL_Rect cora_;	//--------------------------SCORE
+	SDL_Rect High;
 	SDL_Rect nums[10];
 	uint score = 000000;
+	int partida = 0;
+	uint highscore = 000000;
+	uint previous_score = 000000;
 	SDL_Texture* font;
 
 	//----------COMBO!
@@ -101,6 +105,8 @@ public:
 	SDL_Texture* canonTexture;
 	SDL_Texture* gateTexture;
 	SDL_Texture* lose_screen;
+	SDL_Texture* highscore_;
+	SDL_Texture* cora;
 
 	uint bonus_fx;
 	p2Point<int> ray;
