@@ -524,7 +524,7 @@ update_status ModulePhysics::PostUpdate()
 		App->scene_intro->PrintFont(90, 290, App->scene_intro->score);
 		App->scene_intro->PrintFont(90, 410, App->scene_intro->previous_score);
 		App->scene_intro->PrintFont(90, 510, App->scene_intro->highscore);
-		if (App->scene_intro->score > App->scene_intro->previous_score) {
+		if (App->scene_intro->score > App->scene_intro->highscore) {
 			App->scene_intro->highscore = App->scene_intro->score;
 		}
 		if (App->scene_intro->score >= App->scene_intro->highscore && App->scene_intro->score != 0) {
