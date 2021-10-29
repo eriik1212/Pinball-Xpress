@@ -7,6 +7,7 @@
 #include "math.h"
 #include "ModuleSceneIntro.h"
 #include "ModulePlayer.h"
+#include "ModuleAudio.h"
 
 
 #ifdef _DEBUG
@@ -111,15 +112,17 @@ update_status ModulePhysics::PreUpdate()
 	world->Step(1.0f / 60.0f, 6, 2);
 
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
-		f2->Rect->body->ApplyForce(b2Vec2(-2, 0), b2Vec2(15, 0), true);
+		f2->Rect->body->ApplyForce(b2Vec2(-8, 0), b2Vec2(15, 0), true);
+		App->audio->PlayFx(App->scene_intro->flipperSound);
 
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
-		f->Rect->body->ApplyForce(b2Vec2(2, 0), b2Vec2(-15, 0), true);
+		f->Rect->body->ApplyForce(b2Vec2(10, 0), b2Vec2(-15, 0), true);
+		App->audio->PlayFx(App->scene_intro->flipperSound);
 			
 	}
 
@@ -513,8 +516,17 @@ update_status ModulePhysics::PostUpdate()
 		App->renderer->Blit(App->scene_intro->gateTexture, gateX, gateY, NULL, 1.0f, 114.0);
 
 	}
+	int soundplayed = 0;
 
 	if (App->player->countBall < 0) {
+		
+		/*if (soundplayed == 0)
+		{
+			soundplayed += 1;
+			App->audio->PlayFx(App->scene_intro->lostGame, 0);
+			
+		}*/
+		
 		App->renderer->Blit(App->scene_intro->lose_screen, 60, 110, &App->scene_intro->looseScreen);
 		App->scene_intro->PrintFont(90, 290, App->scene_intro->score);
 		App->scene_intro->PrintFont(90, 410, App->scene_intro->previous_score);
@@ -529,6 +541,7 @@ update_status ModulePhysics::PostUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 			App->scene_intro->previous_score = App->scene_intro->score;
 			App->player->countBall = 3;
+			soundplayed = 0;
 			App->scene_intro->circles.add(CreateCircleBullet(360, 630, 8, 0));
 			App->scene_intro->circles.getLast()->data->listener = (Module*)App->player;
 			App->scene_intro->score = 0;

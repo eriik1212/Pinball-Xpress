@@ -56,11 +56,15 @@ update_status ModulePlayer::Update()
             App->scene_intro->circles.clear();
 
             countBall--;
+            App->audio->PlayFx(App->scene_intro->lostLife, 0);
             if (countBall >= 0)
             {
                 App->scene_intro->circles.add(App->physics->CreateCircle(360, 630, 8, 0));
                 App->scene_intro->circles.getLast()->data->listener = (Module*)App->player;
             }
+
+            if (countBall<0)
+                App->audio->PlayFx(App->scene_intro->lostGame, 0);
         }
 
         return UPDATE_CONTINUE;
@@ -73,6 +77,7 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     //BIG CIRCLE
     if (bodyA == App->scene_intro->circles.getLast()->data 
         && bodyB == App->physics->bigCercle)
+        App->audio->PlayFx(App->scene_intro->bonus_fx);
         App->scene_intro->score += 125;
 
     //ALL THREE SMALL CIRCLES
@@ -81,6 +86,7 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
             || bodyB == App->physics->smallCercle2
             || bodyB == App->physics->smallCercle3))
     {
+        App->audio->PlayFx(App->scene_intro->bonus_fx);
         App->scene_intro->score += 175;
 
         //CoMbOOOO!
@@ -98,6 +104,7 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     //MOVING PLATFORM
     if (bodyA == App->scene_intro->circles.getLast()->data
         && bodyB == App->physics->pbody)
+        App->audio->PlayFx(App->scene_intro->bonus_fx);
         App->scene_intro->score += 50;
 
     //ALL FOUR LEFT-SIDE BOXES
@@ -107,6 +114,7 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     {
         if (bodyA == App->scene_intro->circles.getLast()->data
             && bodyB == c->data)
+            App->audio->PlayFx(App->scene_intro->bonus_fx);
             App->scene_intro->score += 200;
         c = c->next;
     }
@@ -114,6 +122,7 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     //HERRADURA
     if (bodyA == App->scene_intro->circles.getLast()->data
         && bodyB == App->scene_intro->herradura)
+        App->audio->PlayFx(App->scene_intro->bonus_fx);
         App->scene_intro->score += 100;
 
     //ALL THREE TRIANGLES
@@ -122,6 +131,7 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
             || bodyB == App->scene_intro->smallTriangle2
             || bodyB == App->scene_intro->smallTriangle3))
     {
+        App->audio->PlayFx(App->scene_intro->bonus_fx);
         App->scene_intro->score += 150;
 
         //Let's Make a CombOOooOOoOoO
@@ -139,8 +149,16 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     if (bodyA == App->scene_intro->circles.getLast()->data
         && (bodyB == App->scene_intro->leftCenterTriangle
             || bodyB == App->scene_intro->rightCenterTriangle))
+    {
+        App->audio->PlayFx(App->scene_intro->bonus_fx);
         App->scene_intro->score += 100;
+    }
+    if (bodyA == App->scene_intro->circles.getLast()->data
+        && bodyB == App->scene_intro->spring)
+    {
+        App->audio->PlayFx(App->scene_intro->springSound);
+    }
 
     //--------------------------------------------------------------------------------------------------- AUDIO
-    App->audio->PlayFx(App->scene_intro->bonus_fx);
+    //App->audio->PlayFx(App->scene_intro->bonus_fx);
 }

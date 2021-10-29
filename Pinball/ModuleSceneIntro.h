@@ -110,7 +110,15 @@ public:
 	SDL_Texture* flipperR;
 	SDL_Texture* flipperL;
 
-	uint bonus_fx;
+	uint bonus_fx,
+		flipperSound,
+		cannonStart,
+		bonusSound,
+		lostLife,
+		lostGame,
+		newLife,
+		springSound;
+
 	p2Point<int> ray;
 	bool ray_on;
 };

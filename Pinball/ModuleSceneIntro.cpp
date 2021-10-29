@@ -76,6 +76,16 @@ bool ModuleSceneIntro::Start()
 	flipperL = App->textures->Load("pinball/flipperL.png");
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
+	bonusSound = App->audio->LoadFx("pinball/bonus_score.wav");
+	flipperSound = App->audio->LoadFx("pinball/flipper.wav");
+	lostGame = App->audio->LoadFx("pinball/lose_game.wav");
+	lostLife = App->audio->LoadFx("pinball/lose_life.wav");
+	newLife = App->audio->LoadFx("pinball/new_life.wav");
+	springSound = App->audio->LoadFx("pinball/spring.wav");
+
+
+	
+
 
 	CreateSensor(App->physics->CreateRectangleSensor(185.5f, 750, 125, 10, 0), Sensor::DEATH, false);
 	CreateSensor(App->physics->CreateRectangleSensor(348, 196, 16, 4, 2), Sensor::CLOSE_GATE, false);
@@ -330,6 +340,8 @@ update_status ModuleSceneIntro::Update()
 		comboTrian1 = false;
 		comboTrian2 = false;
 		comboTrian3 = false;
+		App->audio->PlayFx(bonusSound);
+
 	}
 
 	//MORE COMBOOOOS!!!
@@ -340,6 +352,7 @@ update_status ModuleSceneIntro::Update()
 		comboBall1 = false;
 		comboBall2 = false;
 		comboBall3 = false;
+		App->audio->PlayFx(newLife);
 	}
 
 	//---------------------------------------------------------------------------------------ShootPlatformMovement (KICKER)
@@ -471,14 +484,14 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 		if (bodyA == s->data->sensor && bodyB->listener == (Module*)App->player)
 		{
-			App->audio->PlayFx(bonus_fx);
+			
 
 			switch (s->data->value)
 			{
 			case Sensor::DEATH:
 			{
 				p2List_item<Sensor*>* reset;
-				App->audio->PlayFx(bonus_fx);
+				
 				App->player->isDead = true;
 				closeGate = false;
 				reset = sensors.getFirst();
