@@ -117,7 +117,9 @@ public:
 		lostLife,
 		lostGame,
 		newLife,
-		springSound;
+		springSound,
+		cannonSound,
+		music;
 
 	p2Point<int> ray;
 	bool ray_on;

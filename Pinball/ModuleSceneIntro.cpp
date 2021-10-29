@@ -82,7 +82,8 @@ bool ModuleSceneIntro::Start()
 	lostLife = App->audio->LoadFx("pinball/lose_life.wav");
 	newLife = App->audio->LoadFx("pinball/new_life.wav");
 	springSound = App->audio->LoadFx("pinball/spring.wav");
-
+	cannonSound = App->audio->LoadFx("pinball/cannon.wav");
+	App->audio->PlayMusic("pinball/music.ogg");
 
 	
 
