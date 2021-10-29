@@ -3,7 +3,7 @@ C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(91,51
 C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(197,82): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
 C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(198,85): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
 C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(361,44): warning C4244: 'argumento': conversión de 'double' a 'float32'; posible pérdida de datos
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(429,45): warning C4244: 'argumento': conversión de 'TYPE' a 'TYPE'; posible pérdida de datos
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(431,45): warning C4244: 'argumento': conversión de 'TYPE' a 'TYPE'; posible pérdida de datos
           with
           [
               TYPE=int
@@ -12,7 +12,7 @@ C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(429,4
           [
               TYPE=float
           ]
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(429,30): warning C4244: 'argumento': conversión de 'TYPE' a 'TYPE'; posible pérdida de datos
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(431,30): warning C4244: 'argumento': conversión de 'TYPE' a 'TYPE'; posible pérdida de datos
           with
           [
               TYPE=int
@@ -21,38 +21,38 @@ C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(429,3
           [
               TYPE=float
           ]
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(431,18): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(433,70): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(433,18): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(435,70): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
           with
           [
               TYPE=float
           ]
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(433,47): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(435,47): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
           with
           [
               TYPE=float
           ]
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(436,138): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(438,138): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
           with
           [
               TYPE=float
           ]
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(436,96): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(438,96): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
           with
           [
               TYPE=float
           ]
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(436,57): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(438,57): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
           with
           [
               TYPE=float
           ]
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(436,34): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(438,34): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
           with
           [
               TYPE=float
           ]
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(479,9): warning C4101: 'y': variable local sin referencia
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(479,6): warning C4101: 'x': variable local sin referencia
-C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(503,27): warning C4101: 'reset': variable local sin referencia
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(481,9): warning C4101: 'y': variable local sin referencia
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(481,6): warning C4101: 'x': variable local sin referencia
+C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\ModuleSceneIntro.cpp(505,27): warning C4101: 'reset': variable local sin referencia
   SDL Game.vcxproj -> C:\Users\shake\Desktop\pinball\Pinball-Xpress\Pinball\Debug\2D Physics - class 4.exe

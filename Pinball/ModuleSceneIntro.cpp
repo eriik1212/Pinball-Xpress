@@ -83,7 +83,7 @@ bool ModuleSceneIntro::Start()
 	newLife = App->audio->LoadFx("pinball/new_life.wav");
 	springSound = App->audio->LoadFx("pinball/spring.wav");
 	cannonSound = App->audio->LoadFx("pinball/cannon.wav");
-	App->audio->PlayMusic("pinball/music.ogg");
+	App->audio->PlayMusic("pinball/music1.ogg");
 
 	
 
@@ -361,6 +361,8 @@ update_status ModuleSceneIntro::Update()
 		App->physics->pJoint->SetMotorSpeed(-0.05*App->physics->prismDef.motorSpeed);
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE)
 		App->physics->pJoint->SetMotorSpeed(App->physics->prismDef.motorSpeed);
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+		App->audio->PlayFx(cannonSound);
 
 	//----------------------------------------------------------CloseGate
 	if (closeGate && closeGateBody == nullptr)
