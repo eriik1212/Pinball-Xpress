@@ -520,13 +520,6 @@ update_status ModulePhysics::PostUpdate()
 
 	if (App->player->countBall < 0) {
 		
-		/*if (soundplayed == 0)
-		{
-			soundplayed += 1;
-			App->audio->PlayFx(App->scene_intro->lostGame, 0);
-			
-		}*/
-		
 		App->renderer->Blit(App->scene_intro->lose_screen, 60, 110, &App->scene_intro->looseScreen);
 		App->scene_intro->PrintFont(90, 290, App->scene_intro->score);
 		App->scene_intro->PrintFont(90, 410, App->scene_intro->previous_score);

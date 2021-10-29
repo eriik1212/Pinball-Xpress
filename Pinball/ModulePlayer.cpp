@@ -75,10 +75,13 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
     //--------------------------------------------------------------------------------------------------- SCORE INCREMENT
     //BIG CIRCLE
-    if (bodyA == App->scene_intro->circles.getLast()->data 
+    if (bodyA == App->scene_intro->circles.getLast()->data
         && bodyB == App->physics->bigCercle)
+    {
         App->audio->PlayFx(App->scene_intro->bonus_fx);
         App->scene_intro->score += 125;
+    }
+
 
     //ALL THREE SMALL CIRCLES
     if (bodyA == App->scene_intro->circles.getLast()->data
@@ -104,8 +107,11 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     //MOVING PLATFORM
     if (bodyA == App->scene_intro->circles.getLast()->data
         && bodyB == App->physics->pbody)
+    {
         App->audio->PlayFx(App->scene_intro->bonus_fx);
         App->scene_intro->score += 50;
+    }
+
 
     //ALL FOUR LEFT-SIDE BOXES
     p2List_item<PhysBody*>* c = App->scene_intro->boxes.getFirst();
@@ -114,17 +120,21 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     {
         if (bodyA == App->scene_intro->circles.getLast()->data
             && bodyB == c->data)
+        {
             App->audio->PlayFx(App->scene_intro->bonus_fx);
             App->scene_intro->score += 200;
+        }
         c = c->next;
     }
 
     //HERRADURA
     if (bodyA == App->scene_intro->circles.getLast()->data
         && bodyB == App->scene_intro->herradura)
+    {
         App->audio->PlayFx(App->scene_intro->bonus_fx);
         App->scene_intro->score += 100;
-
+    }
+  
     //ALL THREE TRIANGLES
     if (bodyA == App->scene_intro->circles.getLast()->data
         && (bodyB == App->scene_intro->smallTriangle1
