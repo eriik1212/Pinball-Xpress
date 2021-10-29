@@ -31,7 +31,7 @@ _<Hit the 3 coloured triangles and get 10.000 extra points!>_
 _<Hit the 3 circles above the triangles and get 1 extra ball (plus 15.000 points!)>_
 
 ## DEVELOPMENT PROCESS
-_Working On It_
+This Pinball works in Real Time! We added this feature in order to avoid _Super-Speedy Gameplays_. To do so, we used a **fixed delta time** _(16 ms)_ + **time wait** _(dt - timeElapsed)_. With this method, we calculate the milliseconds that take all our program and make it sleep until 16 ms pass.
   
 ## LINK TO OUR GITHUB:
 
