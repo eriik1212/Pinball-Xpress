@@ -39,6 +39,10 @@ Making the combos was easy. The program check over _OnCollision()_ function (you
 
 Also, we incorporated a sensor to seal the upwards path were the ball arrives to the map once it passed this path. That seal was made in order to avoid the ball getting back on the start launching cannon.
 
+Durning the addition of the loose condition we had a couple of problems related to the score and lives print system, so to save time, we applied a FUYM so the final product looked great and was functional. 
+
+Pressing the space while being on the loose screen will save your score, your highscore, and reset all the points and lives, however, closing the program, will erase all the information of the previous games. 
+
 ## LINK TO OUR GITHUB:
 
   https://github.com/eriik1212/Pinball-Xpress
