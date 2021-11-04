@@ -37,7 +37,7 @@ We made a _Spring Launcher_ for de ball with a **Prismatic Joint**. We added upp
 
 Making the combos was easy. The program check over _OnCollision()_ function (you will find it in _ModulePlayer.h_ and _ModulePlayer.cpp_) and look over whether the ball and the combo's elements collided or not, and if so, a _bool_ variable would be activated to "save" that collision. If 3 determinated _bools_ were **true**, it would activate de combo and reset all these _bools_.
 
-Also, we incorporated a sensor to seal the upwars path were the ball arrives to the map once it passed this path. That seal was made in order to avoid the ball getting back on the start launching cannon.
+Also, we incorporated a sensor to seal the upwards path were the ball arrives to the map once it passed this path. That seal was made in order to avoid the ball getting back on the start launching cannon.
 
 ## LINK TO OUR GITHUB:
 
