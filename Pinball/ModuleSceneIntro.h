@@ -38,7 +38,7 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void CreateSensor(PhysBody* sensor, Sensor::sensorValue sensorType, bool isActive);
 
-	void PrintFont();
+	void PrintFont(int x, int y, uint score_);
 	void Font();
 
 public:
@@ -47,9 +47,14 @@ public:
 
 	bool closeGate = false;
 
-	//--------------------------SCORE
+	SDL_Rect looseScreen;
+	SDL_Rect cora_;	//--------------------------SCORE
+	SDL_Rect High;
 	SDL_Rect nums[10];
 	uint score = 000000;
+	int partida = 0;
+	uint highscore = 000000;
+	uint previous_score = 000000;
 	SDL_Texture* font;
 
 	//----------COMBO!
@@ -99,7 +104,23 @@ public:
 	SDL_Texture* pinballTexture;
 	SDL_Texture* canonTexture;
 	SDL_Texture* gateTexture;
-	uint bonus_fx;
+	SDL_Texture* lose_screen;
+	SDL_Texture* highscore_;
+	SDL_Texture* cora;
+	SDL_Texture* flipperR;
+	SDL_Texture* flipperL;
+
+	uint bonus_fx,
+		flipperSound,
+		cannonStart,
+		bonusSound,
+		lostLife,
+		lostGame,
+		newLife,
+		springSound,
+		cannonSound,
+		music;
+
 	p2Point<int> ray;
 	bool ray_on;
 };

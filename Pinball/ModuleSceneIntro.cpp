@@ -25,15 +25,33 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	looseScreen.x = 0;
+	looseScreen.y = 0;
+	looseScreen.w = 250;
+	looseScreen.h = 510;
+
+	High.x = 0;
+	High.y = 0;
+	High.w = 63;
+	High.h = 48;
+
+	cora_.x = 0;
+	cora_.y = 0;
+	cora_.w = 37;
+	cora_.h = 34;
+
 	closeGate = false;
 	closeGateBody = nullptr;
 	App->player->countBall = 3;
+
 	score = 0;
 	Font();
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
+	lose_screen = App->textures->Load("pinball/lose_screen.png");
 	font = App->textures->Load("pinball/nums_score.png");
+	cora = App->textures->Load("pinball/corazon.png");
 
 	ballCenter = App->textures->Load("pinball/bolaCentre.png");
 	player = App->textures->Load("pinball/player.png");
@@ -52,8 +70,23 @@ bool ModuleSceneIntro::Start()
 	springTexture = App->textures->Load("pinball/muelle.png");
 	canonTexture = App->textures->Load("pinball/cano.png");
 	gateTexture = App->textures->Load("pinball/gate.png");
+	lose_screen = App->textures->Load("pinball/lose_screen.png");
+	highscore_ = App->textures->Load("pinball/highscore.png");
+	flipperR = App->textures->Load("pinball/flipperR.png");
+	flipperL = App->textures->Load("pinball/flipperL.png");
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
+	bonusSound = App->audio->LoadFx("pinball/bonus_score.wav");
+	flipperSound = App->audio->LoadFx("pinball/flipper.wav");
+	lostGame = App->audio->LoadFx("pinball/lose_game.wav");
+	lostLife = App->audio->LoadFx("pinball/lose_life.wav");
+	newLife = App->audio->LoadFx("pinball/new_life.wav");
+	springSound = App->audio->LoadFx("pinball/spring.wav");
+	cannonSound = App->audio->LoadFx("pinball/cannon.wav");
+	App->audio->PlayMusic("pinball/music1.ogg");
+
+	
+
 
 	CreateSensor(App->physics->CreateRectangleSensor(185.5f, 750, 125, 10, 0), Sensor::DEATH, false);
 	CreateSensor(App->physics->CreateRectangleSensor(348, 196, 16, 4, 2), Sensor::CLOSE_GATE, false);
@@ -161,8 +194,8 @@ bool ModuleSceneIntro::Start()
 	};
 
 	// CENTER TRIANGLES
-	leftCenterTriangle = App->physics->CreateChainStatic(70, 180, triangleShape, 6, 2);
-	rightCenterTriangle = App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 2);
+	leftCenterTriangle = App->physics->CreateChainStatic(70, 180, triangleShape, 6, 1.5);
+	rightCenterTriangle = App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1.5);
 	/*triangle_Shape.add(App->physics->CreateChainStatic(70, 180, triangleShape, 6, 1));
 	triangle_Shape.add(App->physics->CreateChainStatic(275, 180, triangleShape1, 6, 1));*/
 
@@ -282,7 +315,7 @@ bool ModuleSceneIntro::Start()
 	};
 
 	herradura_Shape.add(App->physics->CreateChainStatic(0, 750, down_triangles, 14, 0));
-
+	
 	return ret;
 }
 
@@ -300,6 +333,7 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update()
 {
 
+	
 	// COMBO!
 	if (comboTrian1 && comboTrian2 && comboTrian3)
 	{
@@ -307,6 +341,8 @@ update_status ModuleSceneIntro::Update()
 		comboTrian1 = false;
 		comboTrian2 = false;
 		comboTrian3 = false;
+		App->audio->PlayFx(bonusSound);
+
 	}
 
 	//MORE COMBOOOOS!!!
@@ -317,6 +353,7 @@ update_status ModuleSceneIntro::Update()
 		comboBall1 = false;
 		comboBall2 = false;
 		comboBall3 = false;
+		App->audio->PlayFx(newLife);
 	}
 
 	//---------------------------------------------------------------------------------------ShootPlatformMovement (KICKER)
@@ -324,6 +361,8 @@ update_status ModuleSceneIntro::Update()
 		App->physics->pJoint->SetMotorSpeed(-0.05*App->physics->prismDef.motorSpeed);
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_IDLE)
 		App->physics->pJoint->SetMotorSpeed(App->physics->prismDef.motorSpeed);
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_UP)
+		App->audio->PlayFx(cannonSound);
 
 	//----------------------------------------------------------CloseGate
 	if (closeGate && closeGateBody == nullptr)
@@ -353,6 +392,8 @@ update_status ModuleSceneIntro::Update()
 		int x, y;
 		c->data->GetPosition(x, y);
 		App->renderer->Blit(pinballTexture, 0, 0, NULL, 1.0f, c->data->GetRotation());
+
+		App->renderer->Blit(cora, 310, 5, &App->scene_intro->cora_);
 		c = c->next;
 	}
 
@@ -397,7 +438,7 @@ update_status ModuleSceneIntro::Update()
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
 	}
 
-	PrintFont();
+	PrintFont (22, 0, score);
 
 	return UPDATE_CONTINUE;
 }
@@ -409,20 +450,21 @@ void ModuleSceneIntro::Font()
 	}
 }
 
-void ModuleSceneIntro::PrintFont() {
+void ModuleSceneIntro::PrintFont(int x, int y, uint score_) {
 
-	int score_temp = score,
+	int score_temp = score_,
 		balls_temp = App->player->countBall;
 	for (int i = 8; i >= 0; i--) {
-
 		int temp = score_temp % 10;
-		App->renderer->Blit(font, i * 22, 0, &nums[temp]);
+		App->renderer->Blit(font, i *22+x, y, &nums[temp]);
 		score_temp = score_temp / 10;
 	}
 
-	App->renderer->Blit(font, 326, 0, &nums[balls_temp]);
+	App->renderer->Blit(font, 352, 0, &nums[balls_temp]);
 
 }
+
+
 
 void ModuleSceneIntro::CreateSensor(PhysBody* sensor, Sensor::sensorValue sensorType, bool isActive)
 {
@@ -445,14 +487,14 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 		if (bodyA == s->data->sensor && bodyB->listener == (Module*)App->player)
 		{
-			App->audio->PlayFx(bonus_fx);
+			
 
 			switch (s->data->value)
 			{
 			case Sensor::DEATH:
 			{
 				p2List_item<Sensor*>* reset;
-				App->audio->PlayFx(bonus_fx);
+				
 				App->player->isDead = true;
 				closeGate = false;
 				reset = sensors.getFirst();

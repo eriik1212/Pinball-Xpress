@@ -6,6 +6,9 @@
 #include "p2Point.h"
 #include "math.h"
 #include "ModuleSceneIntro.h"
+#include "ModulePlayer.h"
+#include "ModuleAudio.h"
+
 
 #ifdef _DEBUG
 #pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
@@ -77,6 +80,28 @@ bool ModulePhysics::Start()
 	pbody->width = 50 * 0.5f;
 	pbody->height = 10 * 0.5f;
 
+	b2Vec2 a = { 1, 0 };
+	b2Vec2 b = { -0.5, 0 };
+
+	b2Vec2 c = { 0.5, 0 };
+
+	f = new Flipper;
+	f->Circle = App->physics->CreateCircleStatic(SCREEN_WIDTH / 2 + 45, 655, 6, 0);
+	f->Rect = App->physics->CreateRectangleDynamic(SCREEN_WIDTH / 2 + 40,655, App->player->rectSect.w-20, App->player->rectSect.h - 10,0);
+	f->rightSide = false;
+	App->physics->CreateRevoluteJoint(f->Rect, a, f->Circle, c, 35.0f);
+	App->player->flippers.add(f);
+
+	a = { 0.44,0 };
+
+	f2 = new Flipper;
+	f2->Circle = App->physics->CreateCircleStatic(SCREEN_WIDTH / 2 - 70, 655, 6, 0);
+	f2->Rect = App->physics->CreateRectangleDynamic(SCREEN_WIDTH / 2 - 55, 655, App->player->rectSect.w-20, App->player->rectSect.h - 10, 0);
+	f2->rightSide = true;
+	App->physics->CreateRevoluteJoint(f2->Rect, a, f2->Circle, b, 35.0f);
+	App->player->flippers.add(f2);
+
+
 
 	return true;
 }
@@ -85,6 +110,22 @@ bool ModulePhysics::Start()
 update_status ModulePhysics::PreUpdate()
 {
 	world->Step(1.0f / 60.0f, 6, 2);
+
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+	{
+		f2->Rect->body->ApplyForce(b2Vec2(-8, 0), b2Vec2(15, 0), true);
+		App->audio->PlayFx(App->scene_intro->flipperSound);
+
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	{
+		f->Rect->body->ApplyForce(b2Vec2(10, 0), b2Vec2(-15, 0), true);
+		App->audio->PlayFx(App->scene_intro->flipperSound);
+			
+	}
+
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && debug == true)
 	{
@@ -375,6 +416,8 @@ PhysBody* ModulePhysics::CreateChainDynamic(int x, int y, int* points, int size,
 	return pbody;
 }
 
+
+
 b2RevoluteJoint* ModulePhysics::CreateRevoluteJoint(PhysBody* A, b2Vec2 anchorA, PhysBody* B, b2Vec2 anchorB, float angle, bool collideConnected, bool enableLimit)
 {
 	b2RevoluteJointDef RevJointDef;
@@ -398,6 +441,7 @@ update_status ModulePhysics::PostUpdate()
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
+
 	// ------------------------------------------------------------------------------------- Blit Objects
 	// Positions
 	int bigCercleX, bigCercleY,
@@ -415,7 +459,9 @@ update_status ModulePhysics::PostUpdate()
 		herraduraX, herraduraY,
 		springX, springY,
 		kickerX, kickerY,
-		gateX = NULL, gateY = NULL;
+		gateX = NULL, gateY = NULL,
+		flipperRX, flipperRY,
+		flipperLX, flipperLY;
 
 	bigCercle->GetPosition(bigCercleX, bigCercleY);
 	App->renderer->Blit(App->scene_intro->ballCenter, bigCercleX, bigCercleY, NULL, 1.0f, 0);
@@ -457,11 +503,42 @@ update_status ModulePhysics::PostUpdate()
 	App->scene_intro->kicker->GetPosition(kickerX, kickerY);
 	App->renderer->Blit(App->scene_intro->canonTexture, kickerX - 10, kickerY - 60, NULL, 1.0f, 0);
 
+	App->physics->f->Rect->GetPosition(flipperRX, flipperRY);
+	App->renderer->Blit(App->scene_intro->flipperL, flipperRX, flipperRY, NULL, 1.0f, App->physics->f->Rect->GetRotation());
+
+	App->physics->f2->Rect->GetPosition(flipperLX, flipperLY);
+	App->renderer->Blit(App->scene_intro->flipperR, flipperLX, flipperLY, NULL, 1.0f, App->physics->f2->Rect->GetRotation());
+
+
 	if (App->scene_intro->closeGate)
 	{
 		App->scene_intro->closeGateBody->GetPosition(gateX, gateY);
 		App->renderer->Blit(App->scene_intro->gateTexture, gateX, gateY, NULL, 1.0f, 114.0);
 
+	}
+	int soundplayed = 0;
+
+	if (App->player->countBall < 0) {
+		
+		App->renderer->Blit(App->scene_intro->lose_screen, 60, 110, &App->scene_intro->looseScreen);
+		App->scene_intro->PrintFont(90, 290, App->scene_intro->score);
+		App->scene_intro->PrintFont(90, 410, App->scene_intro->previous_score);
+		App->scene_intro->PrintFont(90, 510, App->scene_intro->highscore);
+		if (App->scene_intro->score > App->scene_intro->highscore) {
+			App->scene_intro->highscore = App->scene_intro->score;
+		}
+		if (App->scene_intro->score >= App->scene_intro->highscore && App->scene_intro->score != 0) {
+			App->scene_intro->highscore = App->scene_intro->score;
+			App->renderer->Blit(App->scene_intro->highscore_, 255, 265, &App->scene_intro->High);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			App->scene_intro->previous_score = App->scene_intro->score;
+			App->player->countBall = 3;
+			soundplayed = 0;
+			App->scene_intro->circles.add(CreateCircleBullet(360, 630, 8, 0));
+			App->scene_intro->circles.getLast()->data->listener = (Module*)App->player;
+			App->scene_intro->score = 0;
+		}
 	}
 
 	if (!debug)
@@ -592,6 +669,7 @@ update_status ModulePhysics::PostUpdate()
 			mouseBody = nullptr;
 		}
 	}
+
 	return UPDATE_CONTINUE;
 }
 

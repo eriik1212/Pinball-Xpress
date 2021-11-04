@@ -1,8 +1,10 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "ModulePlayer.h"
 #include "Box2D/Box2D/Box2D.h"
 #include "Box2D/Box2D/Dynamics/Joints/b2PrismaticJoint.h"
+#include "ModulePlayer.h"
 
 #define GRAVITY_X 0.0f
 #define GRAVITY_Y -7.0f
@@ -58,7 +60,6 @@ public:
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, int angle);
 	PhysBody* CreateChainStatic(int x, int y, int* points, int size, int restitution);
 	PhysBody* CreateChainDynamic(int x, int y, int* points, int size, int restitution);
-
 	PhysBody* ballBullet;
 
 	// b2ContactListener ---
@@ -84,13 +85,15 @@ public:
 	
 	b2MouseJoint* mouse_joint;
 
+	Flipper* f;
+	Flipper* f2;
 private:
 
 	bool debug;
 	b2World* world;
 
 	b2Body* ground;
-
+	
 	b2Body* mouseBody;
 	b2Vec2 p;
 	p2List<b2RevoluteJoint*> revoluteList;
