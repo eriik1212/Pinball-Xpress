@@ -109,7 +109,7 @@ bool ModulePhysics::Start()
 // 
 update_status ModulePhysics::PreUpdate()
 {
-	world->Step(1.0f / 60.0f, 6, 2);
+	world->Step(1.0f / 60.0f, 10, 8);
 
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
@@ -641,7 +641,7 @@ update_status ModulePhysics::PostUpdate()
 					def.bodyB = mouseBody;
 					def.target = mousePosition;
 					def.dampingRatio = 0.5f;
-					def.frequencyHz = 2.0f;
+					def.frequencyHz = 50.0f;
 					def.maxForce = 100.0f * mouseBody->GetMass();
 
 					mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
